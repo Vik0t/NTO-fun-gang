@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class LoviAptechky : MonoBehaviour
 {
-   // Скрипт тестовый если что
+   // Скрипт тестовый если что!
 }
