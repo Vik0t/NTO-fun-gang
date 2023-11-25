@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerBullet
   - MenuDrop
+  - ProgrammingOpener
   layers:
   - Default
   - TransparentFX

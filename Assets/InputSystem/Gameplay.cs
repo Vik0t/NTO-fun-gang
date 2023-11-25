@@ -62,6 +62,15 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Program"",
+                    ""type"": ""Button"",
+                    ""id"": ""34d2d061-3ccd-4f84-972d-f243a0d05e3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -304,6 +313,28 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42b184a9-3cd7-408a-ae56-3a331b0746e9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Program"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed2687fc-c442-497f-a3c2-9e6dc84d14b9"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Program"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -856,6 +887,7 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Exit = m_Player.FindAction("Exit", throwIfNotFound: true);
+        m_Player_Program = m_Player.FindAction("Program", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -933,6 +965,7 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Exit;
+    private readonly InputAction m_Player_Program;
     public struct PlayerActions
     {
         private @Gameplay m_Wrapper;
@@ -941,6 +974,7 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Exit => m_Wrapper.m_Player_Exit;
+        public InputAction @Program => m_Wrapper.m_Player_Program;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -962,6 +996,9 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @Program.started += instance.OnProgram;
+            @Program.performed += instance.OnProgram;
+            @Program.canceled += instance.OnProgram;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -978,6 +1015,9 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @Program.started -= instance.OnProgram;
+            @Program.performed -= instance.OnProgram;
+            @Program.canceled -= instance.OnProgram;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1119,6 +1159,7 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnProgram(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

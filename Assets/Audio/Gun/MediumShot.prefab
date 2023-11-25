@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1025075084152052225}
   - component: {fileID: 8285895119187590532}
+  - component: {fileID: 2567945974378847033}
   m_Layer: 0
   m_Name: MediumShot
   m_TagString: Untagged
@@ -128,3 +129,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2567945974378847033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5378246135031682339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d6541426382b84babc2c1ec3b495f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.4

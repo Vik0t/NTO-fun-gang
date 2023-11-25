@@ -27,7 +27,7 @@ namespace Muratich {
         }
 
         public void PlayerFire(InputAction.CallbackContext value) {
-            if (IsReady) {
+            if (IsReady && Controller.Control) {
                 IsReady = false;
                 StartCoroutine(Reload());
             }

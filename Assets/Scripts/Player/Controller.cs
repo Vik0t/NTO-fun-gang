@@ -23,6 +23,7 @@ namespace Muratich {
         public Transform[] RayOrigins;
         private Gun gun;
         private MenuDrop menuDrop;
+        private ProgrammingPanelOpen programming;
 
         private bool LastDeg; // For players' rotation
         public static bool Control; // Variable for cutscenes => Turn off/on movement ability
@@ -38,6 +39,7 @@ namespace Muratich {
             PlayerSpeedConst = PlayerSpeed;
             gun = gameObject.GetComponent<Gun>();
             menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
+            programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
         }
 
         private void FixedUpdate()
@@ -62,6 +64,7 @@ namespace Muratich {
             controls.Player.Jump.performed += PlayerJump;
             controls.Player.Fire.performed += gun.PlayerFire;
             controls.Player.Exit.performed += menuDrop.OpenPanel;
+            controls.Player.Program.performed += programming.OpenProgrammingPanel;
         }
 
         private void OnDisable() {
@@ -70,6 +73,7 @@ namespace Muratich {
             controls.Player.Move.canceled -= OnMoveCanceled;
             controls.Player.Jump.performed -= PlayerJump;
             controls.Player.Exit.performed -= menuDrop.OpenPanel;
+            controls.Player.Program.performed -= programming.OpenProgrammingPanel;
         }
 
         private void OnMovePerformed(InputAction.CallbackContext value) => movement = value.ReadValue<Vector2>();
@@ -78,7 +82,7 @@ namespace Muratich {
         
         
         void PlayerJump(InputAction.CallbackContext value) {
-            if (IsGrounded)  rb.AddForce(transform.up * JumpPower, ForceMode2D.Force);
+            if (IsGrounded && Control)  rb.AddForce(transform.up * JumpPower, ForceMode2D.Force);
         }
 
         private void MovePlayer()
@@ -98,12 +102,14 @@ namespace Muratich {
         {
             RaycastHit2D hit1;
             RaycastHit2D hit2;
-            float distance = 0.15f;
+            float distance = 0.3f;
 
             hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
             hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
+            
             Debug.DrawRay(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, Color.green);
             Debug.DrawRay(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, Color.green);
+            
             if (hit1.collider != null || hit2.collider != null)
             {
                 IsGrounded = true;
@@ -122,6 +128,13 @@ namespace Muratich {
         {
             LastDeg = !LastDeg;
             transform.Rotate(Vector2.up * 180);
+        }
+
+        void OnCollisionEnter2D(Collision2D collision) {
+            if (collision.gameObject.layer == 3)
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
     }
 }
