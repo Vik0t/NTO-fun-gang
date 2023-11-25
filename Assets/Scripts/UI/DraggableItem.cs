@@ -1,26 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DraggableItem : MonoBehaviour, IDragHandler
+public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Canvas canvas;
-    private RectTransform rectTransform;
-    // Start is called before the first frame update
-    void Start()
+    public Image image;
+    [HideInInspector ]public Transform parentAfterDrag;
+
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        rectTransform = GetComponent<RectTransform>();
+        Debug.Log("Begin drag");
+        parentAfterDrag = transform.parent;
+        transform.SetParent(transform.root);
+        transform.SetAsLastSibling();
+        image.raycastTarget = false;
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        Debug.Log("Dragging");
+        transform.position = Input.mousePosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnEndDrag(PointerEventData eventData)
     {
-        
+        Debug.Log("End of drag");
+        transform.SetParent(parentAfterDrag);
+        image.raycastTarget = true;
     }
 }

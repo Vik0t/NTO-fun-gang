@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "NTO-fun-gang-main.sln"
+    "dotnet.defaultSolution": "NTO-fun-gang.sln"
 }
