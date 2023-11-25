@@ -15,10 +15,13 @@ public class Controller : MonoBehaviour
     private bool IsGrounded;
     private Rigidbody2D rb = null;
     public float PlayerSpeed = 0;
+    private float PlayerSpeedConst = 0;
     public float JumpPower = 0;
+    private int groundLayer = 3;
+    public Transform[] RayOrigins;
 
     private bool LastDeg; // For players' rotation
-    public static bool Control; // Variable for cutscenes => Turn off/on movement ability
+    private bool Control; // Variable for cutscenes => Turn off/on movement ability
 
 
     void Awake() {
@@ -27,12 +30,15 @@ public class Controller : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         Control = LastDeg = true;
+        groundLayer = LayerMask.GetMask("Ground");
+        PlayerSpeedConst = PlayerSpeed;
     }
 
     private void FixedUpdate()
     {
         if (Control)
         {
+            GroundCheck();
             MovePlayer();
             if (!IsGrounded) anim.Play("Jump");
         }
@@ -71,15 +77,33 @@ public class Controller : MonoBehaviour
             rb.velocity = new Vector2(movement.x * PlayerSpeed * Time.fixedDeltaTime * 10, rb.velocity.y);
             if (IsGrounded) anim.Play("Run");
         }
-        else anim.Play("Idle");
+        else {
+            if (IsGrounded) anim.Play("Idle");
+        }
     }
 
-    void OnCollisionStay2D(Collision2D other) {
-        if (other.gameObject.layer == 3) IsGrounded = true;
-    }
+    private void GroundCheck()
+    {
+        RaycastHit2D hit1;
+        RaycastHit2D hit2;
+        float distance = 0.25f;
 
-    void OnCollisionExit2D(Collision2D other) {
-        if (other.gameObject.layer == 3) IsGrounded = false;
+        hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
+        hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
+        Debug.DrawRay(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, Color.green);
+        Debug.DrawRay(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, Color.green);
+        if (hit1.collider != null || hit2.collider != null)
+        {
+            IsGrounded = true;
+            rb.sharedMaterial.friction = 5;
+            PlayerSpeed = PlayerSpeedConst;
+        }
+        else 
+        {
+            IsGrounded = false;
+            rb.sharedMaterial.friction = 0;
+            PlayerSpeed = PlayerSpeedConst / 1.5f;
+        }
     }
 
     private void Rotation()
