@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Draggable : MonoBehaviour, IDragHandler
+public class DraggableItem : MonoBehaviour, IDragHandler
 {
     public Canvas canvas;
     private RectTransform rectTransform;
