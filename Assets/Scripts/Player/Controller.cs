@@ -102,7 +102,7 @@ namespace Muratich {
         {
             RaycastHit2D hit1;
             RaycastHit2D hit2;
-            float distance = 0.3f;
+            float distance = 0.34f;
 
             hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
             hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
@@ -120,7 +120,7 @@ namespace Muratich {
             {
                 IsGrounded = false;
                 rb.sharedMaterial.friction = 0;
-                PlayerSpeed = PlayerSpeedConst / 1.7f;
+                PlayerSpeed = PlayerSpeedConst / 1.8f;
             }
         }
 
