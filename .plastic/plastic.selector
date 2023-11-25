@@ -1,0 +1,4 @@
+repository "NTO-fun-gang-main@viktorvarrar@cloud"
+  path "/"
+    br "/main"
+    co "/main"
