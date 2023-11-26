@@ -92,7 +92,10 @@ namespace Muratich {
         
         
         void PlayerJump(InputAction.CallbackContext value) {
-            if (IsGrounded && Control)  rb.AddForce(transform.up * JumpPower, ForceMode2D.Force);
+            if (IsGrounded && Control)  {
+                rb.velocity = new Vector2(rb.velocity.x, JumpPower);
+                //rb.AddForce(transform.up * JumpPower, ForceMode2D.Force);
+            }
         }
 
         private void MovePlayer()
@@ -104,6 +107,7 @@ namespace Muratich {
                 if (IsGrounded) anim.Play("Run");
             }
             else {
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 if (IsGrounded) anim.Play("Idle");
             }
         }
@@ -112,7 +116,7 @@ namespace Muratich {
         {
             RaycastHit2D hit1;
             RaycastHit2D hit2;
-            float distance = 0.4f;
+            float distance = 0.2f;
 
             hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
             hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
@@ -123,13 +127,12 @@ namespace Muratich {
             if (hit1.collider != null || hit2.collider != null)
             {
                 IsGrounded = true;
-                rb.sharedMaterial.friction = 5;
                 PlayerSpeed = PlayerSpeedConst;
             }
             else 
             {
                 IsGrounded = false;
-                rb.sharedMaterial.friction = 0;
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 PlayerSpeed = PlayerSpeedConst / 1.8f;
             }
         }

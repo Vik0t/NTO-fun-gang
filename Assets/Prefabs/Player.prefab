@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 20
-  JumpPower: 300
+  JumpPower: 5
   RayOrigins:
   - {fileID: 946099228315034782}
   - {fileID: 1282559692349218381}
