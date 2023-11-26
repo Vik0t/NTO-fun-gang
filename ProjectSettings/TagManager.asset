@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerBullet
   - MenuDrop
+  - ProgrammingOpener
+  - VirtualCamera
   layers:
   - Default
   - TransparentFX
