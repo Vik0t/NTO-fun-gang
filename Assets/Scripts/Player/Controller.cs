@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using Cinemachine;
 using Muratich;
 
 namespace Muratich {
@@ -13,21 +14,28 @@ namespace Muratich {
         private Vector2 movement = Vector2.zero;
 
 
+        // Components
         private Animator anim;
-        private bool IsGrounded;
         private Rigidbody2D rb = null;
+        private Gun gun;
+        private MenuDrop menuDrop;
+        private ProgrammingPanelOpen programming;
+        private CinemachineVirtualCamera cvm;
+
+
+        // Movement
+        private bool IsGrounded;
         public float PlayerSpeed = 0;
         private float PlayerSpeedConst = 0;
         public float JumpPower = 0;
         private int groundLayer = 3;
         public Transform[] RayOrigins;
-        private Gun gun;
-        private MenuDrop menuDrop;
-        private ProgrammingPanelOpen programming;
-
-        private bool LastDeg; // For players' rotation
+        private bool LastDeg;
         public static bool Control; // Variable for cutscenes => Turn off/on movement ability
 
+        
+        // Effects && Sounds
+        public GameObject GroundEffect;
 
         void Awake() {
             // Input init
@@ -40,6 +48,8 @@ namespace Muratich {
             gun = gameObject.GetComponent<Gun>();
             menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
             programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
+            cvm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+            cvm.Follow = gameObject.transform;
         }
 
         private void FixedUpdate()
@@ -102,7 +112,7 @@ namespace Muratich {
         {
             RaycastHit2D hit1;
             RaycastHit2D hit2;
-            float distance = 0.34f;
+            float distance = 0.4f;
 
             hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
             hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
@@ -134,6 +144,7 @@ namespace Muratich {
             if (collision.gameObject.layer == 3)
             {
                 rb.velocity = Vector2.zero;
+                Instantiate(GroundEffect, RayOrigins[2].transform.position, Quaternion.identity);
             }
         }
     }
