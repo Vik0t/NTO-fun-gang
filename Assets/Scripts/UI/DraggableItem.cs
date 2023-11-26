@@ -14,7 +14,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log("Sibling Index : " + transform.GetSiblingIndex());
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
-        transform.SetSiblingIndex(4);
+        transform.SetAsLastSibling();
         image.raycastTarget = false;
     }
 
