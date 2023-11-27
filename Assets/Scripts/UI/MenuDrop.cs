@@ -12,15 +12,15 @@ namespace Muratich {
         [SerializeField] private Button selectionButton;
         
         public void OpenPanel(InputAction.CallbackContext value) {
-            if (Controller.Control) {
-                Controller.Control = false;
+            if (Controller.control) {
+                Controller.control = false;
                 panel.SetActive(true);
                 selectionButton.Select();
             }
         }
 
         public void ClosePanel() {
-            Controller.Control = true;
+            Controller.control = true;
             panel.SetActive(false);
         }
 

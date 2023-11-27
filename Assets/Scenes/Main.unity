@@ -937,8 +937,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3daf61576cd45419d14ae34eae7e7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.5
   origin: {fileID: 999880128}
+  commandList:
+  - Move
+  - Rotate
+  - Move
 --- !u!61 &1658681577
 BoxCollider2D:
   m_ObjectHideFlags: 0

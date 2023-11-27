@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Muratich {
     public class PlayerBullet : MonoBehaviour {
         public GameObject particle;
-        public int BulletSpeed;
+        public int bulletSpeed;
 
         void Start() {
             StartCoroutine(DestroyTime(0.8f));
         }
-        void Update() => transform.Translate(Vector2.left * Time.deltaTime * BulletSpeed);
+        void Update() => transform.Translate(Vector2.left * Time.deltaTime * bulletSpeed);
 
 
         void OnCollisionEnter2D(Collision2D collision)

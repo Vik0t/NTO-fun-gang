@@ -24,14 +24,14 @@ namespace Muratich {
 
 
         // Movement
-        private bool IsGrounded;
-        public float PlayerSpeed = 0;
-        private float PlayerSpeedConst = 0;
-        public float JumpPower = 0;
+        private bool isGrounded;
+        public float playerSpeed = 0;
+        private float playerSpeedConst = 0;
+        public float jumpPower = 0;
         private int groundLayer = 3;
-        public Transform[] RayOrigins;
-        private bool LastDeg;
-        public static bool Control; // Variable for cutscenes => Turn off/on movement ability
+        public Transform[] rayOrigins;
+        private bool lastDeg;
+        public static bool control; // Variable for cutscenes => Turn off/on movement ability
 
         
         // Effects && Sounds
@@ -42,9 +42,9 @@ namespace Muratich {
             controls = new Gameplay();
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
-            Control = LastDeg = true;
+            control = lastDeg = true;
             groundLayer = LayerMask.GetMask("Ground");
-            PlayerSpeedConst = PlayerSpeed;
+            playerSpeedConst = playerSpeed;
             gun = gameObject.GetComponent<Gun>();
             menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
             programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
@@ -54,11 +54,11 @@ namespace Muratich {
 
         private void FixedUpdate()
         {
-            if (Control)
+            if (control)
             {
                 GroundCheck();
                 MovePlayer();
-                if (!IsGrounded) anim.Play("Jump");
+                if (!isGrounded) anim.Play("Jump");
             }
             else {
                 anim.Play("Idle");
@@ -92,23 +92,23 @@ namespace Muratich {
         
         
         void PlayerJump(InputAction.CallbackContext value) {
-            if (IsGrounded && Control)  {
-                rb.velocity = new Vector2(rb.velocity.x, JumpPower);
-                //rb.AddForce(transform.up * JumpPower, ForceMode2D.Force);
+            if (isGrounded && control)  {
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+                //rb.AddForce(transform.up * jumpPower, ForceMode2D.Force);
             }
         }
 
         private void MovePlayer()
         {
-            if (movement.x > 0 && LastDeg) Rotation();
-            if (movement.x < 0 && !LastDeg) Rotation();
+            if (movement.x > 0 && lastDeg) Rotation();
+            if (movement.x < 0 && !lastDeg) Rotation();
             if (movement.x != 0) {
-                rb.velocity = new Vector2(movement.x * PlayerSpeed * Time.fixedDeltaTime * 10, rb.velocity.y);
-                if (IsGrounded) anim.Play("Run");
+                rb.velocity = new Vector2(movement.x * playerSpeed * Time.fixedDeltaTime * 10, rb.velocity.y);
+                if (isGrounded) anim.Play("Run");
             }
             else {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                if (IsGrounded) anim.Play("Idle");
+                if (isGrounded) anim.Play("Idle");
             }
         }
 
@@ -118,28 +118,28 @@ namespace Muratich {
             RaycastHit2D hit2;
             float distance = 0.2f;
 
-            hit1 = Physics2D.Raycast(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, distance, groundLayer);
-            hit2 = Physics2D.Raycast(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, distance, groundLayer);
+            hit1 = Physics2D.Raycast(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, distance, groundLayer);
+            hit2 = Physics2D.Raycast(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, distance, groundLayer);
             
-            Debug.DrawRay(new Vector2(RayOrigins[0].position.x, RayOrigins[0].position.y), Vector2.down, Color.green);
-            Debug.DrawRay(new Vector2(RayOrigins[1].position.x, RayOrigins[1].position.y), Vector2.down, Color.green);
+            Debug.DrawRay(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, Color.green);
+            Debug.DrawRay(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, Color.green);
             
             if (hit1.collider != null || hit2.collider != null)
             {
-                IsGrounded = true;
-                PlayerSpeed = PlayerSpeedConst;
+                isGrounded = true;
+                playerSpeed = playerSpeedConst;
             }
             else 
             {
-                IsGrounded = false;
+                isGrounded = false;
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                PlayerSpeed = PlayerSpeedConst / 1.8f;
+                playerSpeed = playerSpeedConst / 1.8f;
             }
         }
 
         private void Rotation()
         {
-            LastDeg = !LastDeg;
+            lastDeg = !lastDeg;
             transform.Rotate(Vector2.up * 180);
         }
 
@@ -147,7 +147,7 @@ namespace Muratich {
             if (collision.gameObject.layer == 3)
             {
                 rb.velocity = Vector2.zero;
-                Instantiate(GroundEffect, RayOrigins[2].transform.position, Quaternion.identity);
+                Instantiate(GroundEffect, rayOrigins[2].transform.position, Quaternion.identity);
             }
         }
     }

@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 6783663237345777498, guid: df13b67309a8fd74e929fe9a6be28a84, type: 3}
-  BulletSpeed: 40
+  bulletSpeed: 30
 --- !u!50 &-8907677703749504302
 Rigidbody2D:
   serializedVersion: 4

@@ -11,15 +11,15 @@ namespace Muratich {
         public Button firstButton;
 
         public void OpenProgrammingPanel(InputAction.CallbackContext value) {
-            if (Controller.Control) {
-                Controller.Control = false;
+            if (Controller.control) {
+                Controller.control = false;
                 panel.SetActive(true);
                 firstButton.Select();
             }
         }
 
         public void CloseProgrammingPanel() {
-            Controller.Control = true;
+            Controller.control = true;
             panel.SetActive(false);
         }
     }

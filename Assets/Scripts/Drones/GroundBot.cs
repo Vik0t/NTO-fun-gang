@@ -6,49 +6,71 @@ namespace Muratich {
 public class GroundBot : MonoBehaviour
     {
         public float speed;
-        private bool OnMove;
-        private int GroundLayer;
+        private int groundLayer;
         private Rigidbody2D rb;
         private Animator anim;
         public Transform origin;
+        private int dir;
+        public List<string> commandList;
 
         void Start() {
-            GroundLayer = LayerMask.GetMask("Ground");
+            groundLayer = LayerMask.GetMask("Ground");
             rb = gameObject.GetComponent<Rigidbody2D>();
             anim = gameObject.GetComponent<Animator>();
-            MoveTowards();
-            Rotate();
-            MoveTowards();
-        }
-
-        public void Rotate() {
-            transform.Rotate(Vector2.up * 180);
-        }
-
-        public void MoveTowards() {
-            RaycastHit2D hit1;
-            RaycastHit2D hit2;
             
-            anim.Play("Run");
-            hit1 = Physics2D.Raycast(origin.position, Vector2.left, 1, GroundLayer);
-            hit2 = Physics2D.Raycast(origin.position, Vector2.right, 1, GroundLayer);
-            StartCoroutine(ToMove(hit1, hit2));
+            if (transform.rotation.y == 0) dir = 1;
+            else dir = -1;
+
+            //AcceptCommandList(commandList);
+            StartCoroutine(MainStart());
         }
 
-        IEnumerator ToMove(RaycastHit2D h1, RaycastHit2D h2) {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
-            h1 = Physics2D.Raycast(origin.position, Vector2.left, 1, GroundLayer);
-            h2 = Physics2D.Raycast(origin.position, Vector2.right, 1, GroundLayer);
-            yield return new WaitForSeconds(0.1f);
+        IEnumerator MainStart() {
+            yield return Move();
+            yield return Rotate();
+            yield return Move();
+        }
 
-            if (h1.collider == null && h2.collider == null) {
-                Debug.Log("Yes");
-                StartCoroutine(ToMove(h1,h2));
+        public void ToAcceptCommandList(List<string> commands) {
+            StartCoroutine(AcceptCommandList(commandList));
+        }
+
+        IEnumerator AcceptCommandList(List<string> commands) {
+            for (int i = 0; i < commands.Count; i++) {
+                switch (commands[i]) {
+                    case "Move":
+                        yield return Move();
+                        break;
+                    case "Rotate":
+                        yield return Rotate();
+                        break;
+                }
             }
-            else {
-                Debug.Log("No");
-                anim.Play("Idle");
-                StopCoroutine(ToMove(h1,h2));
+        }
+
+        IEnumerator Rotate() {
+            transform.Rotate(Vector2.up * 180);
+            dir *= -1;
+            rb.velocity = new Vector2(speed * dir * 1, rb.velocity.y);
+            yield return null;
+        }
+
+        IEnumerator Move() {
+            anim.Play("Run");
+            RaycastHit2D hit;
+
+            while (true) {
+                hit = Physics2D.Raycast(Vector2.left, Vector2.right, 1, groundLayer); 
+                if (dir == -1) hit = Physics2D.Raycast(Vector2.left, Vector2.right, 1, groundLayer); 
+                else if (dir == 1) hit = Physics2D.Raycast(Vector2.right, Vector2.right, 1, groundLayer); 
+                
+                if (hit.collider != null) {
+                    anim.Play("Idle"); 
+                    Debug.Log("Broken");
+                    break;
+                }
+                rb.velocity = new Vector2(speed * dir, rb.velocity.y);
+                yield return null;
             }
         }
     }

@@ -7,11 +7,11 @@ namespace Muratich {
     public class Gun : MonoBehaviour {
         public GameObject bullet;
         public Transform fireOrigin;
-        public float ReloadTime;
+        public float reloadTime;
         private Animator pistolAnim;
         public GameObject pistol;
-        private bool IsReady = true;
-        public GameObject FireSound;
+        private bool isReady = true;
+        public GameObject fireSound;
 
         void Start() {
             pistolAnim = pistol.gameObject.GetComponent<Animator>();
@@ -19,16 +19,16 @@ namespace Muratich {
     
         IEnumerator Reload() {
             pistolAnim.Play("Fire");
-            Instantiate(FireSound);
+            Instantiate(fireSound);
             Instantiate(bullet, new Vector2(fireOrigin.position.x, fireOrigin.position.y) , gameObject.transform.rotation);
-            yield return new WaitForSeconds(ReloadTime);
+            yield return new WaitForSeconds(reloadTime);
             pistolAnim.Play("Idle");
-            IsReady = true;
+            isReady = true;
         }
 
         public void PlayerFire(InputAction.CallbackContext value) {
-            if (IsReady && Controller.Control) {
-                IsReady = false;
+            if (isReady && Controller.control) {
+                isReady = false;
                 StartCoroutine(Reload());
             }
         }
