@@ -17,6 +17,12 @@ public class GroundBot : MonoBehaviour
             rb = gameObject.GetComponent<Rigidbody2D>();
             anim = gameObject.GetComponent<Animator>();
             MoveTowards();
+            Rotate();
+            MoveTowards();
+        }
+
+        public void Rotate() {
+            transform.Rotate(Vector2.up * 180);
         }
 
         public void MoveTowards() {
@@ -30,19 +36,19 @@ public class GroundBot : MonoBehaviour
         }
 
         IEnumerator ToMove(RaycastHit2D h1, RaycastHit2D h2) {
+            rb.velocity = new Vector2(speed, rb.velocity.y);
             h1 = Physics2D.Raycast(origin.position, Vector2.left, 1, GroundLayer);
             h2 = Physics2D.Raycast(origin.position, Vector2.right, 1, GroundLayer);
-            rb.velocity = new Vector2(speed, rb.velocity.y);
             yield return new WaitForSeconds(0.1f);
 
-            if (h1 != null && h2 != null) {
+            if (h1.collider == null && h2.collider == null) {
+                Debug.Log("Yes");
+                StartCoroutine(ToMove(h1,h2));
+            }
+            else {
                 Debug.Log("No");
                 anim.Play("Idle");
                 StopCoroutine(ToMove(h1,h2));
-            }
-            else {
-                Debug.Log("Yes");
-                StartCoroutine(ToMove(h1,h2));
             }
         }
     }
