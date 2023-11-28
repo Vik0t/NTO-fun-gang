@@ -1,10 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace Muratich {
-public class GroundBot : MonoBehaviour
+    public enum Commands
     {
+        Move,
+        Rotate,
+        Jump,
+        Pick,
+        Put,
+        Attack
+    }
+
+    public class GroundBot : MonoBehaviour
+    {
+        
         public float speed;
         private int groundLayer;
         private int interactiveLayer;
@@ -36,22 +48,22 @@ public class GroundBot : MonoBehaviour
         IEnumerator AcceptCommandList(List<int> commands) {
             for (int i = 0; i < commands.Count; i++) {
                 switch (commands[i]) {
-                    case 0:
+                    case (int)Commands.Move:
                         yield return Move();
                         break;
-                    case 1:
+                    case (int)Commands.Rotate:
                         yield return Rotate();
                         break;
-                    case 2:
+                    case (int)Commands.Jump:
                         yield return Jump();
                         break;
-                    case 3:
+                    case (int)Commands.Pick:
                         yield return Pick();
                         break;
-                    case 4:
+                    case (int)Commands.Put:
                         yield return Put();
                         break;
-                    case 5:
+                    case (int)Commands.Attack:
                         yield return Attack();
                         break;
                 }
