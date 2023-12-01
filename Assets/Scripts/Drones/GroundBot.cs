@@ -26,7 +26,6 @@ namespace Muratich {
         public Transform pickUpOrigin;
         public Transform putOrigin;
         private int dir;
-        public List<int> commandList;
         private bool alreadyCarryOn = false;
         public GameObject bullet;
         public GameObject bulletSound;
@@ -39,12 +38,10 @@ namespace Muratich {
             
             if (transform.rotation.y == 0) dir = 1;
             else dir = -1;
-
-            StartDoCommand(commandList);
         }
 
-        public void StartDoCommand(List<int> commands) {
-            StartCoroutine(AcceptCommandList(commandList));
+        public void StartDoCommands(List<int> commands) {
+            StartCoroutine(AcceptCommandList(commands));
         }
 
         IEnumerator AcceptCommandList(List<int> commands) {

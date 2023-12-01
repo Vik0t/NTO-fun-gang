@@ -9,6 +9,8 @@ TagManager:
   - ProgrammingOpener
   - VirtualCamera
   - Pick
+  - GroundBot
+  - FlightBot
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Muratich {
     public class PlayerBullet : MonoBehaviour {
         public GameObject particle;
+        public GameObject splash;
         public int bulletSpeed;
 
         void Start() {
@@ -15,7 +16,8 @@ namespace Muratich {
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            Instantiate(particle, transform.position, transform.rotation);
+            Instantiate(particle,transform.position, transform.rotation);
+            Instantiate(splash, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 
