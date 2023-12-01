@@ -18,16 +18,19 @@ namespace Muratich {
     {
         
         public float speed;
+        public float jumpForce;
         private int groundLayer;
         private int interactiveLayer;
         private Rigidbody2D rb;
         private Animator anim;
         public Transform origin;
-        public Transform PickUpOrigin;
+        public Transform pickUpOrigin;
+        public Transform putOrigin;
         private int dir;
         public List<int> commandList;
-        public int jumpForce;
         private bool alreadyCarryOn = false;
+        public GameObject bullet;
+        public GameObject bulletSound;
 
         void Start() {
             groundLayer = LayerMask.GetMask("Ground");
@@ -73,7 +76,7 @@ namespace Muratich {
         IEnumerator Rotate() {
             transform.Rotate(Vector2.up * 180);
             dir *= -1;
-            rb.velocity = new Vector2(speed * dir * 1.5f, rb.velocity.y);
+            rb.velocity = new Vector2(speed * dir * 1.5f * Time.fixedDeltaTime, rb.velocity.y);
             yield return null;
         }
 
@@ -82,43 +85,52 @@ namespace Muratich {
             RaycastHit2D hit;
 
             while (true) {
-                if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 0.5f, groundLayer); 
-                else hit = Physics2D.Raycast(origin.position, Vector2.left, 0.5f); 
+                if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
+                else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer); 
 
                 if (hit.collider != null) {
-                    anim.Play("Idle"); 
-                    Debug.Log("Ended");
+                    anim.Play("Idle");
                     break;
                 }
-                rb.velocity = new Vector2(speed * dir, rb.velocity.y);
+                rb.velocity = new Vector2(speed * dir * Time.fixedDeltaTime, rb.velocity.y);
                 yield return null;
             }
         }
 
         IEnumerator Jump() {
-            rb.velocity = new Vector2(speed * dir * 1.5f, jumpForce);
-            yield return null;
+            rb.velocity = new Vector2(jumpForce * dir * 0.5f, jumpForce);
+            while (rb.velocity != Vector2.zero) yield return null;
         }
 
         IEnumerator Pick() {
             RaycastHit2D hit;
-            if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 0.5f, groundLayer); 
-            else hit = Physics2D.Raycast(origin.position, Vector2.left, 0.5f, groundLayer);
-
-            if (hit.collider.transform.gameObject.tag == "Pick" && !alreadyCarryOn) {
-                alreadyCarryOn = false;
-                hit.transform.position = PickUpOrigin.transform.position;
-                hit.transform.parent = PickUpOrigin.transform;
+            if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
+            else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
+            
+            if (hit.collider != null) {
+                if (hit.transform.gameObject.tag == "Pick" && !alreadyCarryOn) {
+                    alreadyCarryOn = true;
+                    hit.transform.position = pickUpOrigin.position;
+                    hit.transform.parent = pickUpOrigin;
+                }
             }
             yield return null;
         }
 
         IEnumerator Put() {
+            if (alreadyCarryOn) {
+                Transform child = pickUpOrigin.GetChild(0).gameObject.transform;
+                child.position = putOrigin.position;
+                child.parent = null;
+                alreadyCarryOn = false;
+            }
             yield return null;
         }
 
         IEnumerator Attack() {
-            yield return null;
+            Instantiate(bulletSound);
+            Instantiate(bullet, putOrigin.position, putOrigin.rotation);
+            yield return new WaitForSeconds(1f);
         }
     }
 }
