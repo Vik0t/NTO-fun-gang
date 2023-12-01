@@ -4,20 +4,19 @@ using System.Globalization;
 using UnityEngine;
 
 namespace Muratich {
-    public enum GroundBotCommands
+    public enum FlightBotCommands
     {
-        Move,
-        Rotate,
-        Jump,
-        Pick,
-        Put,
-        Attack
+        Move, // 0
+        Rotate, // 1
+        Up, // 2
+        Down, // 3
+        Pick, // 4
+        Put, // 5
+        Attack // 6
     }
-
-    public class GroundBot : MonoBehaviour
+    public class FlightBot : MonoBehaviour
     {
         public float speed;
-        public float jumpForce;
         private int groundLayer;
         private int interactiveLayer;
         private Rigidbody2D rb;
@@ -50,22 +49,25 @@ namespace Muratich {
         IEnumerator AcceptCommandList(List<int> commands) {
             for (int i = 0; i < commands.Count; i++) {
                 switch (commands[i]) {
-                    case (int)GroundBotCommands.Move:
+                    case (int)FlightBotCommands.Move:
                         yield return Move();
                         break;
-                    case (int)GroundBotCommands.Rotate:
+                    case (int)FlightBotCommands.Rotate:
                         yield return Rotate();
                         break;
-                    case (int)GroundBotCommands.Jump:
-                        yield return Jump();
+                    case (int)FlightBotCommands.Up:
+                        yield return Vertical(true);
                         break;
-                    case (int)GroundBotCommands.Pick:
+                    case (int)FlightBotCommands.Down:
+                        yield return Vertical(false);
+                        break;
+                    case (int)FlightBotCommands.Pick:
                         yield return Pick();
                         break;
-                    case (int)GroundBotCommands.Put:
+                    case (int)FlightBotCommands.Put:
                         yield return Put();
                         break;
-                    case (int)GroundBotCommands.Attack:
+                    case (int)FlightBotCommands.Attack:
                         yield return Attack();
                         break;
                 }
@@ -75,18 +77,17 @@ namespace Muratich {
         IEnumerator Rotate() {
             transform.Rotate(Vector2.up * 180);
             dir *= -1;
-            rb.velocity = new Vector2(speed * dir * 1.5f * Time.fixedDeltaTime, rb.velocity.y);
             yield return null;
         }
 
         IEnumerator Move() {
             anim.Play("Run");
             RaycastHit2D hit;
-
-            while (true) {
+            
+            while (true) { 
                 if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
-                else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer); 
-
+                else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
+                
                 if (hit.collider != null) {
                     anim.Play("Idle");
                     break;
@@ -96,9 +97,25 @@ namespace Muratich {
             }
         }
 
-        IEnumerator Jump() {
-            rb.velocity = new Vector2(jumpForce * dir * 0.5f, jumpForce);
-            while (rb.velocity != Vector2.zero) yield return null;
+        IEnumerator Vertical(bool OnUp) {
+            rb.velocity = Vector2.zero;
+            anim.Play("Run");
+            RaycastHit2D hit;
+            int verticalDir = 0;
+
+            if (OnUp) verticalDir = 1;
+            else verticalDir = -1;
+            while (true) {
+                if (OnUp) hit = Physics2D.Raycast(origin.position, Vector2.up, 0.25f, groundLayer); 
+                else hit = Physics2D.Raycast(origin.position, Vector2.down, 0.25f, groundLayer); 
+
+                if (hit.collider != null) {
+                    anim.Play("Idle");
+                    break;
+                }
+                rb.velocity = new Vector2(rb.velocity.x, speed * verticalDir * Time.fixedDeltaTime);
+                yield return null;
+            }
         }
 
         IEnumerator Pick() {

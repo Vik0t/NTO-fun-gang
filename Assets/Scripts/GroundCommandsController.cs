@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GroundCommandsController : MonoBehaviour
 {
-    GroundBot groundBot;
+    //GroundBot groundBot;
     Button button;
     // Start is called before the first frame update
     void Start()
