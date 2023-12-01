@@ -20,7 +20,7 @@ namespace Muratich {
         IEnumerator Reload() {
             pistolAnim.Play("Fire");
             Instantiate(fireSound);
-            Instantiate(bullet, new Vector2(fireOrigin.position.x, fireOrigin.position.y) , gameObject.transform.rotation);
+            Instantiate(bullet, fireOrigin.position, gameObject.transform.rotation);
             yield return new WaitForSeconds(reloadTime);
             pistolAnim.Play("Idle");
             isReady = true;
