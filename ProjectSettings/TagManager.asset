@@ -11,6 +11,7 @@ TagManager:
   - Pick
   - GroundBot
   - FlightBot
+  - CommandList
   layers:
   - Default
   - TransparentFX
