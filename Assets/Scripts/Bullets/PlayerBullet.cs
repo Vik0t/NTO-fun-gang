@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour {
     public GameObject particle;
-    public GameObject splash;
     public int bulletSpeed;
 
     void Start() {
@@ -16,7 +15,6 @@ public class PlayerBullet : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collision)
     {
         Instantiate(particle,transform.position, transform.rotation);
-        Instantiate(splash, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 

@@ -136,8 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 6783663237345777498, guid: df13b67309a8fd74e929fe9a6be28a84, type: 3}
-  splash: {fileID: 4677203258140488819, guid: ca7393b718a089f4b824495bd4a9489c, type: 3}
-  bulletSpeed: 15
+  bulletSpeed: 40
 --- !u!50 &-8907677703749504302
 Rigidbody2D:
   serializedVersion: 4

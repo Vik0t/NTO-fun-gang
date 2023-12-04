@@ -40,9 +40,5 @@ public class CommandsChanger : MonoBehaviour {
                 }
             }
         }
-        Debug.Log("Update");
-        foreach (int i in applyCommands.cmds) {
-            Debug.Log("Ind_"+i.ToString());
-        }
     }
 }

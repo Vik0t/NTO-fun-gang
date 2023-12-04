@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum BotCommands {
     Move,
@@ -15,39 +16,43 @@ public enum BotCommands {
 
 public class ApplyCommands : MonoBehaviour
 {
-    private GroundBot groundBot;
-    private FlightBot flightBot;
     public List<int> cmds;
     private int currentBotInd;
     private CommandsChanger commandsChanger;
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
+    [SerializeField] private List<Bots> bots = new List<Bots>();
+    public GameObject[] buttons;
     private Transform commandList;
+    public Image botChangeButton;
 
     private void Start() {
-        //groundBot = GameObject.FindGameObjectWithTag("GroundBot").GetComponent<GroundBot>();
-        flightBot = GameObject.FindGameObjectWithTag("FlightBot").GetComponent<FlightBot>();
-        cmds = new List<int>();
         commandsChanger = gameObject.GetComponent<CommandsChanger>();
+        UpdateAvaliableList();
+        botChangeButton.sprite = bots[currentBotInd].img;  
     }
 
     public void Apply() {
-        Debug.Log("Apply");
-        foreach (int i in cmds) {
-            Debug.Log("Ind_"+i.ToString());
+        switch (bots[currentBotInd].name) {
+            case "GroundBot":
+                GroundBot bot = GameObject.FindGameObjectWithTag(bots[currentBotInd].name).GetComponent<GroundBot>();
+                bot.StartDoCommands(cmds);
+                break;
+            case "FlightBot":
+                FlightBot bot1 = GameObject.FindGameObjectWithTag(bots[currentBotInd].name).GetComponent<FlightBot>();
+                break;
         }
-        //groundBot.StartDoCommands(cmds);
-        flightBot.StartDoCommands(cmds);
+    }
+
+    public void BackBot() {
+
     }
 
     public void ChangeBot() {
         currentBotInd += 1;
-        if (currentBotInd >= 2) currentBotInd = 0;
+        if (currentBotInd >= bots.Count) currentBotInd = 0;
         Delete();
         UpdateAvaliableList();
-    }
-
-    public void UpdateAvaliableList() {
-
+        botChangeButton.sprite = bots[currentBotInd].img;  
     }
 
     public void Delete() {
@@ -88,11 +93,26 @@ public class ApplyCommands : MonoBehaviour
             }
         }
     }
+
+    private void UpdateAvaliableList() {
+        for (int k = 0; k < buttons.Length; k++) {
+            buttons[k].SetActive(false);
+        }
+        foreach (int index in bots[currentBotInd].avaliableCommands) {
+            buttons[index].SetActive(true);
+        }
+    }
 }
 
 [System.Serializable]
 public class Blocks {
     public string name;
     public GameObject prefab;
-    public int botIndex;
+}
+
+[System.Serializable]
+public class Bots {
+    public string name;
+    public Sprite img;
+    public List<int> avaliableCommands;
 }
