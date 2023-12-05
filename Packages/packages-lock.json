@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.mpewsey.hexagonal-ui": {
+      "version": "https://github.com/mpewsey/HexagonalUI.git#v1.3.1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "2847fb5026ff2b2c761b442b12289ff8c8d46593"
+    },
     "com.unity.2d.animation": {
       "version": "9.0.4",
       "depth": 1,
