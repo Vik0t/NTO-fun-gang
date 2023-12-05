@@ -370,6 +370,10 @@ MonoBehaviour:
   - {fileID: 946099228315034782}
   - {fileID: 1282559692349218381}
   - {fileID: 146837240495132664}
+  movingTags:
+  - MovingPlatform
+  - GroundBot
+  - FlightBot
   GroundEffect: {fileID: 6783663237345777498, guid: a39a8bf1b8a07ac4dbcfd7b05d0bb1a2, type: 3}
 --- !u!114 &551400071222701136
 MonoBehaviour:

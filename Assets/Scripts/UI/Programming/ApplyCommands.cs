@@ -12,7 +12,8 @@ public enum BotCommands {
     Down,
     Pick,
     Put,
-    Attack
+    Attack,
+    If
 }
 
 public class ApplyCommands : MonoBehaviour
@@ -38,39 +39,22 @@ public class ApplyCommands : MonoBehaviour
     }
 
     public void Apply() {
-        switch (bots[currentBotInd].name) {
-            case "GroundBot":
-                groundBot.GetComponent<GroundBot>().StartDoCommands(cmds);
-                break;
-            case "FlightBot":
-                flyingBot.GetComponent<FlightBot>().StartDoCommands(cmds);
-                break;
-        }
+        groundBot.GetComponent<GroundBot>().StartDoCommands(cmds);
+        flyingBot.GetComponent<FlightBot>().StartDoCommands(cmds);
     }
-
-    private void SetBot() => flyingBot.SetActive(false);
 
     public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     public void ChangeBot() {
+        Delete();
         currentBotInd += 1;
         if (currentBotInd >= bots.Count) currentBotInd = 0;
-        Delete();
         UpdateAvaliableList();
         botChangeButton.sprite = bots[currentBotInd].img;
-        switch (bots[currentBotInd].name) {
-            case "GroundBot":
-                groundBot.SetActive(true);
-                flyingBot.SetActive(false);
-                break;
-            case "FlightBot":
-                groundBot.SetActive(false);
-                flyingBot.SetActive(true);
-                break;
-        }
     }
 
     public void Delete() {
+        bots[currentBotInd].chosenCommands = cmds;
         commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
         for (int itemNum = 0; itemNum < commandList.childCount; itemNum++) {
             Transform obj = commandList.GetChild(itemNum).transform;
@@ -130,4 +114,5 @@ public class Bots {
     public string name;
     public Sprite img;
     public List<int> avaliableCommands;
+    public List<int> chosenCommands;
 }

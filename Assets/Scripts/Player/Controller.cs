@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -29,6 +29,7 @@ public class Controller : MonoBehaviour
     private int groundLayer = 3;
     public Transform[] rayOrigins;
     private bool lastDeg;
+    public List<string> movingTags;
     public static bool control; // Variable for cutscenes => Turn off/on movement ability
 
     
@@ -92,7 +93,6 @@ public class Controller : MonoBehaviour
     void PlayerJump(InputAction.CallbackContext value) {
         if (isGrounded && control)  {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-            //rb.AddForce(transform.up * jumpPower, ForceMode2D.Force);
         }
     }
 
@@ -146,6 +146,16 @@ public class Controller : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             Instantiate(GroundEffect, rayOrigins[2].transform.position, Quaternion.identity);
+        }
+        
+        if (movingTags.Contains(collision.gameObject.tag)) {
+            gameObject.transform.parent = collision.transform;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision) {
+        if (movingTags.Contains(collision.gameObject.tag)) {
+            gameObject.transform.parent = null;
         }
     }
 }

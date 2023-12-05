@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1683931547861218247}
   - component: {fileID: 5974571460431345841}
   - component: {fileID: 5008019165423020678}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flight_Drone
   m_TagString: FlightBot
   m_Icon: {fileID: 0}

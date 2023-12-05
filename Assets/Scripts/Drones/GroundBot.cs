@@ -72,7 +72,7 @@ public class GroundBot : MonoBehaviour
             if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
             else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer); 
 
-            if (hit.collider != null) {
+            if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
                 anim.Play("Idle");
                 break;
             }
@@ -91,7 +91,7 @@ public class GroundBot : MonoBehaviour
         if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
         else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
         
-        if (hit.collider != null) {
+        if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
             if (hit.transform.gameObject.tag == "Pick" && !alreadyCarryOn) {
                 alreadyCarryOn = true;
                 hit.transform.position = pickUpOrigin.position;
