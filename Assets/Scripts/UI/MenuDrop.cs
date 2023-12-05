@@ -22,8 +22,6 @@ public class MenuDrop : MonoBehaviour
         Controller.control = true;
         panel.SetActive(false);
     }
-
-    public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     
     public void Menu() => SceneManager.LoadScene(0);
 }

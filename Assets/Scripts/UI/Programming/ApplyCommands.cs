@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum BotCommands {
     Move,
@@ -24,35 +25,49 @@ public class ApplyCommands : MonoBehaviour
     public GameObject[] buttons;
     private Transform commandList;
     public Image botChangeButton;
+    private GameObject groundBot;
+    private GameObject flyingBot;
 
     private void Start() {
         commandsChanger = gameObject.GetComponent<CommandsChanger>();
         UpdateAvaliableList();
         botChangeButton.sprite = bots[currentBotInd].img;  
+
+        groundBot = GameObject.FindGameObjectWithTag(bots[0].name);
+        flyingBot = GameObject.FindGameObjectWithTag(bots[1].name);
     }
 
     public void Apply() {
         switch (bots[currentBotInd].name) {
             case "GroundBot":
-                GroundBot bot = GameObject.FindGameObjectWithTag(bots[currentBotInd].name).GetComponent<GroundBot>();
-                bot.StartDoCommands(cmds);
+                groundBot.GetComponent<GroundBot>().StartDoCommands(cmds);
                 break;
             case "FlightBot":
-                FlightBot bot1 = GameObject.FindGameObjectWithTag(bots[currentBotInd].name).GetComponent<FlightBot>();
+                flyingBot.GetComponent<FlightBot>().StartDoCommands(cmds);
                 break;
         }
     }
 
-    public void BackBot() {
+    private void SetBot() => flyingBot.SetActive(false);
 
-    }
+    public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     public void ChangeBot() {
         currentBotInd += 1;
         if (currentBotInd >= bots.Count) currentBotInd = 0;
         Delete();
         UpdateAvaliableList();
-        botChangeButton.sprite = bots[currentBotInd].img;  
+        botChangeButton.sprite = bots[currentBotInd].img;
+        switch (bots[currentBotInd].name) {
+            case "GroundBot":
+                groundBot.SetActive(true);
+                flyingBot.SetActive(false);
+                break;
+            case "FlightBot":
+                groundBot.SetActive(false);
+                flyingBot.SetActive(true);
+                break;
+        }
     }
 
     public void Delete() {
