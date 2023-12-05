@@ -12,6 +12,7 @@ TagManager:
   - GroundBot
   - FlightBot
   - CommandList
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX

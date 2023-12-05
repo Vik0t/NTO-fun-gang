@@ -37,6 +37,8 @@ public class CommandsChanger : MonoBehaviour {
                         { applyCommands.cmds.Add((int)BotCommands.Put); break; }
                     case "Attack":
                         { applyCommands.cmds.Add((int)BotCommands.Attack); break; }
+                    case "If":
+                        { applyCommands.cmds.Add((int)BotCommands.If); break; }
                 }
             }
         }
