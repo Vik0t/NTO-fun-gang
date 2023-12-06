@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1696133449776714487}
   m_Layer: 3
   m_Name: Box
-  m_TagString: Untagged
+  m_TagString: Box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,7 +181,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 8058199417588549651}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4af00c0da46f3754192ae038b3aa6882, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

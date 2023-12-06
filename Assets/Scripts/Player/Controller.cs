@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,8 @@ public class Controller : MonoBehaviour
     private bool lastDeg;
     public List<string> movingTags;
     public static bool control; // Variable for cutscenes => Turn off/on movement ability
+    private bool alive;
+    private Animator deathAnim;
 
     
     // Effects && Sounds
@@ -41,7 +44,7 @@ public class Controller : MonoBehaviour
         controls = new Gameplay();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        control = lastDeg = true;
+        control = lastDeg = alive = true;
         groundLayer = LayerMask.GetMask("Ground");
         playerSpeedConst = playerSpeed;
         gun = gameObject.GetComponent<Gun>();
@@ -49,11 +52,12 @@ public class Controller : MonoBehaviour
         programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
         cvm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cvm.Follow = gameObject.transform;
+        deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        if (control)
+        if (control && alive)
         {
             GroundCheck();
             MovePlayer();
@@ -114,15 +118,14 @@ public class Controller : MonoBehaviour
     {
         RaycastHit2D hit1;
         RaycastHit2D hit2;
+        RaycastHit2D hit3;
         float distance = 0.2f;
 
         hit1 = Physics2D.Raycast(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, distance, groundLayer);
         hit2 = Physics2D.Raycast(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, distance, groundLayer);
+        hit3 = Physics2D.Raycast(new Vector2(rayOrigins[2].position.x, rayOrigins[2].position.y), Vector2.down, distance, groundLayer);
         
-        Debug.DrawRay(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, Color.green);
-        Debug.DrawRay(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, Color.green);
-        
-        if (hit1.collider != null || hit2.collider != null)
+        if (hit1.collider != null || hit2.collider != null || hit3.collider != null)
         {
             isGrounded = true;
             playerSpeed = playerSpeedConst;
@@ -145,12 +148,23 @@ public class Controller : MonoBehaviour
         if (collision.gameObject.layer == 3)
         {
             rb.velocity = Vector2.zero;
-            Instantiate(GroundEffect, rayOrigins[2].transform.position, Quaternion.identity);
+            Instantiate(GroundEffect, rayOrigins[3].transform.position, Quaternion.identity);
         }
         
         if (movingTags.Contains(collision.gameObject.tag)) {
             gameObject.transform.parent = collision.transform;
         }
+
+        if (collision.gameObject.tag == "Respawn") {
+            alive = false;
+            StartCoroutine(DeathAnim());
+        }
+    }
+
+    IEnumerator DeathAnim() {
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void OnCollisionExit2D(Collision2D collision) {

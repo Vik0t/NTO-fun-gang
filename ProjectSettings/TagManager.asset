@@ -13,6 +13,9 @@ TagManager:
   - FlightBot
   - CommandList
   - MovingPlatform
+  - Box
+  - DeathAnim
+  - BattleBot
   layers:
   - Default
   - TransparentFX

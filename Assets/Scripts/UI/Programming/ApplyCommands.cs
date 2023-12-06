@@ -28,6 +28,7 @@ public class ApplyCommands : MonoBehaviour
     public Image botChangeButton;
     private GameObject groundBot;
     private GameObject flyingBot;
+    private GameObject battleBot;
 
     private void Start() {
         commandsChanger = gameObject.GetComponent<CommandsChanger>();
@@ -36,11 +37,13 @@ public class ApplyCommands : MonoBehaviour
 
         groundBot = GameObject.FindGameObjectWithTag(bots[0].name);
         flyingBot = GameObject.FindGameObjectWithTag(bots[1].name);
+        battleBot = GameObject.FindGameObjectWithTag(bots[2].name);
     }
 
     public void Apply() {
         groundBot.GetComponent<GroundBot>().StartDoCommands(cmds);
         flyingBot.GetComponent<FlightBot>().StartDoCommands(cmds);
+        battleBot.GetComponent<FlightBot>().StartDoCommands(cmds);
     }
 
     public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
