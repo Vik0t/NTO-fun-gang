@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 42d46240f73286d47872734ab6d8a69a
+guid: 5b5b5154a24acde49bbde47b7d8e3fba
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -49,7 +49,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 256
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 102, y: 0, z: 105, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -136,85 +136,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DoorBase
+      name: PlatformIndicator
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 168
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1eff0b1a47763d84fa840f09ccb0ee43
+      internalID: 1341524014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlatformBase
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 128
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8445f241b8f1a194ea29961b9d2cc2ad
-      internalID: 1412860812
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DoorSegmentTop
-      rect:
-        serializedVersion: 2
-        x: 157
-        y: 256
-        width: 72
-        height: 256
+        y: 51
+        width: 512
+        height: 77
       alignment: 2
       pivot: {x: 0.5, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 160, y: 0, z: 165, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 300845e3ae66be6419684176d3b9e862
-      internalID: -461139803
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DoorSegmentBottom
-      rect:
-        serializedVersion: 2
-        x: 277
-        y: 0
-        width: 88
-        height: 300
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7b4e3459d1eb2db439c17df5ff7a65c2
-      internalID: 993410198
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DoorGlow
-      rect:
-        serializedVersion: 2
-        x: 393
-        y: 200
-        width: 112
-        height: 112
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9d913ac02e0025746992d80a0d0555fa
-      internalID: 1017600537
+      spriteID: a122851fdf0150e46888cc54c3320e38
+      internalID: -1628265699
       vertices: []
       indices: 
       edges: []
@@ -223,19 +181,15 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      DoorBase: 1412860812
-      DoorGlow: 1017600537
-      DoorSegmentBottom: 993410198
-      DoorSegmentTop: -461139803
-      Door_0: -516718391
-      Door_3: 854221989
+      PlatformBase: -1628265699
+      PlatformIndicator: 1341524014
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

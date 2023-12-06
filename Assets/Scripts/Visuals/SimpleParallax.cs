@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.Rendering;
 
 namespace Visuals {
-    [ExecuteAlways]
+    [ExecuteAlways, DisallowMultipleComponent]
     public class SimpleParallax : MonoBehaviour
     {
         [Range(-2, 1)] public float distance = 0.1f;
