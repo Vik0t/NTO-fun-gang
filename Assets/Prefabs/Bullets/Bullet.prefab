@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4296346466071205385}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.35721487, y: -2.7987058, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0.36320752, b: 0.36320752, a: 1}
   m_FlipX: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 6783663237345777498, guid: df13b67309a8fd74e929fe9a6be28a84, type: 3}
-  BulletSpeed: 40
+  bulletSpeed: 40
 --- !u!50 &-8907677703749504302
 Rigidbody2D:
   serializedVersion: 4

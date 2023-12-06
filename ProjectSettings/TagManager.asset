@@ -8,6 +8,11 @@ TagManager:
   - MenuDrop
   - ProgrammingOpener
   - VirtualCamera
+  - Pick
+  - GroundBot
+  - FlightBot
+  - CommandList
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX

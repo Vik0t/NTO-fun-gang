@@ -818,11 +818,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: da6d3a99-296c-4eed-81d3-09e6571f5aef
+  cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: NTO-fun-gang-main 2023-11-25_19-10-17
-  organizationId: viktorvarrar
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage:
@@ -830,4 +830,4 @@ PlayerSettings:
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
   insecureHttpOption: 0
-  genesisOrgId: '10170698267867'
+  genesisOrgId: 
