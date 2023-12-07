@@ -41,34 +41,47 @@ public class ApplyCommands : MonoBehaviour
     }
 
     public void Apply() {
-        groundBot.GetComponent<GroundBot>().StartDoCommands(cmds);
-        flyingBot.GetComponent<FlightBot>().StartDoCommands(cmds);
-        battleBot.GetComponent<FlightBot>().StartDoCommands(cmds);
+        foreach (Bots i in bots) {
+            switch (i.name) {
+                case "GroundBot":
+                    groundBot.GetComponent<GroundBot>().StartDoCommands(i.chosenCommands);
+                    break;
+                case "FlightBot":
+                    flyingBot.GetComponent<FlightBot>().StartDoCommands(i.chosenCommands);
+                    break;
+                case "BattleBot":
+                    battleBot.GetComponent<FlightBot>().StartDoCommands(i.chosenCommands);
+                    break;
+            }
+        }
     }
 
     public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     public void ChangeBot() {
-        Delete();
+        bots[currentBotInd].chosenCommands = cmds;
+        Delete(false);
         currentBotInd += 1;
         if (currentBotInd >= bots.Count) currentBotInd = 0;
         UpdateAvaliableList();
         botChangeButton.sprite = bots[currentBotInd].img;
+        foreach (int i in bots[currentBotInd].chosenCommands) {
+            AppedNewCommand(i);
+        }
     }
 
-    public void Delete() {
-        bots[currentBotInd].chosenCommands = cmds;
+    public void Delete(bool isAll) {
+        if (isAll) bots[currentBotInd].chosenCommands = new List<int>();
         commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
         for (int itemNum = 0; itemNum < commandList.childCount; itemNum++) {
             Transform obj = commandList.GetChild(itemNum).transform;
             
-            if (obj.childCount == 0) break;
-            else {
+            if (obj.childCount != 0) {
                 Transform child = obj.GetChild(0).transform;
                 Destroy(child.gameObject);
             }
         }
-        cmds = new List<int>();
+        commandsChanger.UpdateUI();
     }
 
     private void AppedNewCommand(int i) {
