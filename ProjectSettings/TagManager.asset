@@ -16,6 +16,8 @@ TagManager:
   - Box
   - DeathAnim
   - BattleBot
+  - ShieldBot
+  - HeavyBot
   layers:
   - Default
   - TransparentFX

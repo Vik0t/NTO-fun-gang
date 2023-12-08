@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public enum BotCommands {
     Move,
@@ -29,6 +30,13 @@ public class ApplyCommands : MonoBehaviour
     private GameObject groundBot;
     private GameObject flyingBot;
     private GameObject battleBot;
+    private GameObject heavyBot;
+    private GameObject shieldBot;
+    public GameObject listPrefab;
+    private int currentList;
+    public GameObject mainPanel;
+    public TMP_Text listIndexIndicator;
+    public TMP_Text listCounter;
 
     private void Start() {
         UpdateAvaliableList();
@@ -37,6 +45,11 @@ public class ApplyCommands : MonoBehaviour
         groundBot = GameObject.FindGameObjectWithTag(bots[0].name);
         flyingBot = GameObject.FindGameObjectWithTag(bots[1].name);
         battleBot = GameObject.FindGameObjectWithTag(bots[2].name);
+        heavyBot  = GameObject.FindGameObjectWithTag(bots[3].name);
+        shieldBot = GameObject.FindGameObjectWithTag(bots[4].name);
+
+        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
+        mainPanel.SetActive(false);
     }
 
     public void Apply() {
@@ -49,6 +62,12 @@ public class ApplyCommands : MonoBehaviour
                 break;
             case "BattleBot":
                 battleBot.GetComponent<FlightBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
+                break;
+            case "HeavyBot":
+                heavyBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
+                break;
+            case "ShieldBot":
+                shieldBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
                 break;
         }
     }
@@ -69,10 +88,11 @@ public class ApplyCommands : MonoBehaviour
 
     public void Delete(bool isAll) {
         if (isAll) bots[currentBotInd].chosenCommands = new List<int>();
-        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
-        for (int list = 0; list < commandList.childCount; list ++) {
-            for (int itemNum = 0; itemNum < commandList.GetChild(list).childCount; itemNum++) {
-                Transform obj = commandList.GetChild(itemNum).transform;
+        for (int list = 0; list < commandList.childCount; list++) {
+            Transform listObj = commandList.GetChild(list);
+            for (int itemNum = 0; itemNum < listObj.childCount; itemNum++) {
+                
+                Transform obj = listObj.GetChild(itemNum).transform;
                 
                 if (obj.childCount != 0) {
                     Transform child = obj.GetChild(0).transform;
@@ -85,11 +105,11 @@ public class ApplyCommands : MonoBehaviour
     }
 
     private void AppedNewCommand(int i) {
-        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;   
-        Debug.Log(commandList.childCount);
         for (int list = 0; list < commandList.childCount; list++) {
-            for (int itemNum = 0; itemNum < commandList.GetChild(list).childCount; itemNum++) {
-                Transform obj = commandList.GetChild(itemNum).transform;
+            Transform listObj = commandList.GetChild(list);
+            for (int itemNum = 0; itemNum < listObj.childCount; itemNum++) {
+                
+                Transform obj = listObj.GetChild(itemNum).transform;
                 
                 if (obj.childCount == 0) {
                     GameObject newObj = Instantiate(blocks[i].prefab);
@@ -97,11 +117,11 @@ public class ApplyCommands : MonoBehaviour
                     newObj.transform.parent = obj;
                     newObj.name = blocks[i].name;
                     newObj.transform.localScale = new Vector3(1,1,1);
+                    cmds.Add(i);
                     return;
                 }
             }
         }    
-        cmds.Add(i);
     }
 
     public void ButtonDistributor(string buttonName) {
@@ -119,6 +139,36 @@ public class ApplyCommands : MonoBehaviour
         foreach (int index in bots[currentBotInd].avaliableCommands) {
             buttons[index].SetActive(true);
         }
+    }
+
+    public void AddList() {
+        GameObject newList = Instantiate(listPrefab);
+        newList.transform.parent = commandList;
+        newList.transform.localScale = new Vector3(1,1,1);
+
+        RectTransform rt = newList.GetComponent<RectTransform>();
+        rt.anchoredPosition = new Vector3(0,-280,0);
+        rt.sizeDelta = new Vector2(1,550);
+
+        newList.GetComponent<Canvas>().enabled = false;
+        listCounter.text = "At all: " + commandList.childCount.ToString();
+    }
+
+    public void ChangeListIndex(bool next) {
+        if (next) {
+            currentList++;
+            if (currentList >= commandList.childCount) currentList = 0;
+        }
+        else {
+            currentList--;
+            if (currentList < 0) currentList = commandList.childCount-1;
+        }
+        listIndexIndicator.text = currentList.ToString();
+        for (int i = 0; i < commandList.childCount; i++) {
+            Transform child = commandList.GetChild(i);
+            child.gameObject.GetComponent<Canvas>().enabled = false;
+        }
+        commandList.GetChild(currentList).GetComponent<Canvas>().enabled = true;
     }
 }
 

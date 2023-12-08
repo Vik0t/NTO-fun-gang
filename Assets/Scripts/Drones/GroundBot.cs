@@ -14,14 +14,15 @@ public class GroundBot : MonoBehaviour
     private int interactiveLayer;
     private Rigidbody2D rb;
     private Animator anim;
+    
     [Header("Transforms")]
     public Transform origin;
     public Transform pickUpOrigin;
     public Transform putOrigin;
     private int dir;
     private bool alreadyCarryOn = false;
+
     [Header("Weapon specs")]
-    public bool canAttack = true;
     public GameObject bullet;
     public GameObject bulletSound;
 
@@ -120,11 +121,8 @@ public class GroundBot : MonoBehaviour
     }
 
     IEnumerator Attack() {
-        if (canAttack)
-        {
-            Instantiate(bulletSound);
-            Instantiate(bullet, putOrigin.position, putOrigin.rotation);
-            yield return new WaitForSeconds(1f);
-        }
+        Instantiate(bulletSound);
+        Instantiate(bullet, putOrigin.position, putOrigin.rotation);
+        yield return new WaitForSeconds(1f);
     }
 }

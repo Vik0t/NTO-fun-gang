@@ -8,6 +8,7 @@ public class FlightBot : MonoBehaviour
     public float speed;
     private int groundLayer;
     private int interactiveLayer;
+    public float maxLiftableWeight = 10.0f;
     private Rigidbody2D rb;
     private Animator anim;
     public Transform origin;
@@ -108,9 +109,11 @@ public class FlightBot : MonoBehaviour
         RaycastHit2D hit;
         if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
         else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
-        
-        if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
-            if (hit.transform.gameObject.tag == "Pick" && !alreadyCarryOn) {
+        GameObject hitObject = hit.transform.gameObject;
+        var hitObjectSpecs = hitObject.GetComponent<ObjectConfig>();
+
+        if (hit.collider != null && hitObject.name != gameObject.name) {
+            if (hitObjectSpecs.IsPickable && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
                 alreadyCarryOn = true;
                 hit.transform.position = pickUpOrigin.position;
                 hit.transform.parent = pickUpOrigin;
