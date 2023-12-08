@@ -24,6 +24,7 @@ public class ApplyCommands : MonoBehaviour
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
     public GameObject[] buttons;
+    public GameObject[] operators;
     private Transform commandList;
     public Image botChangeButton;
     private GameObject groundBot;
@@ -41,18 +42,16 @@ public class ApplyCommands : MonoBehaviour
     }
 
     public void Apply() {
-        foreach (Bots i in bots) {
-            switch (i.name) {
-                case "GroundBot":
-                    groundBot.GetComponent<GroundBot>().StartDoCommands(i.chosenCommands);
-                    break;
-                case "FlightBot":
-                    flyingBot.GetComponent<FlightBot>().StartDoCommands(i.chosenCommands);
-                    break;
-                case "BattleBot":
-                    battleBot.GetComponent<FlightBot>().StartDoCommands(i.chosenCommands);
-                    break;
-            }
+        switch (bots[currentBotInd].name) {
+            case "GroundBot":
+                groundBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
+                break;
+            case "FlightBot":
+                flyingBot.GetComponent<FlightBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
+                break;
+            case "BattleBot":
+                battleBot.GetComponent<FlightBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
+                break;
         }
     }
 
@@ -78,10 +77,11 @@ public class ApplyCommands : MonoBehaviour
             
             if (obj.childCount != 0) {
                 Transform child = obj.GetChild(0).transform;
+                child.parent = null;
                 Destroy(child.gameObject);
             }
         }
-        commandsChanger.UpdateUI();
+        cmds = new List<int>();
     }
 
     private void AppedNewCommand(int i) {
@@ -98,7 +98,7 @@ public class ApplyCommands : MonoBehaviour
                 break;
             }
         }
-        commandsChanger.UpdateUI();
+        cmds.Add(i);
     }
 
     public void ButtonDistributor(string buttonName) {
