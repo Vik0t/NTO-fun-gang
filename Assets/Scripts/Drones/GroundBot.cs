@@ -5,17 +5,23 @@ using UnityEngine;
 
 public class GroundBot : MonoBehaviour
 {
+    [Header("Specs")]
     public float speed;
     public float jumpForce;
+    public float maxLiftableWeight = 10.0f;
+    public bool isBeatable = true;
     private int groundLayer;
     private int interactiveLayer;
     private Rigidbody2D rb;
     private Animator anim;
+    [Header("Transforms")]
     public Transform origin;
     public Transform pickUpOrigin;
     public Transform putOrigin;
     private int dir;
     private bool alreadyCarryOn = false;
+    [Header("Weapon specs")]
+    public bool canAttack = true;
     public GameObject bullet;
     public GameObject bulletSound;
 
@@ -90,9 +96,11 @@ public class GroundBot : MonoBehaviour
         RaycastHit2D hit;
         if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
         else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
-        
-        if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
-            if (hit.transform.gameObject.tag == "Pick" && !alreadyCarryOn) {
+        GameObject hitObject = hit.transform.gameObject;
+        var hitObjectSpecs = hitObject.GetComponent<ObjectConfig>();
+
+        if (hit.collider != null && hitObject.name != gameObject.name) {
+            if (hitObject.tag == "Pick" && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
                 alreadyCarryOn = true;
                 hit.transform.position = pickUpOrigin.position;
                 hit.transform.parent = pickUpOrigin;
@@ -112,8 +120,11 @@ public class GroundBot : MonoBehaviour
     }
 
     IEnumerator Attack() {
-        Instantiate(bulletSound);
-        Instantiate(bullet, putOrigin.position, putOrigin.rotation);
-        yield return new WaitForSeconds(1f);
+        if (canAttack)
+        {
+            Instantiate(bulletSound);
+            Instantiate(bullet, putOrigin.position, putOrigin.rotation);
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
