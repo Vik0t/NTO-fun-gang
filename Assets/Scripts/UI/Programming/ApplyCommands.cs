@@ -20,7 +20,6 @@ public class ApplyCommands : MonoBehaviour
 {
     public List<int> cmds;
     private int currentBotInd;
-    private CommandsChanger commandsChanger;
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
     public GameObject[] buttons;
@@ -32,7 +31,6 @@ public class ApplyCommands : MonoBehaviour
     private GameObject battleBot;
 
     private void Start() {
-        commandsChanger = gameObject.GetComponent<CommandsChanger>();
         UpdateAvaliableList();
         botChangeButton.sprite = bots[currentBotInd].img;  
 
@@ -72,32 +70,37 @@ public class ApplyCommands : MonoBehaviour
     public void Delete(bool isAll) {
         if (isAll) bots[currentBotInd].chosenCommands = new List<int>();
         commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
-        for (int itemNum = 0; itemNum < commandList.childCount; itemNum++) {
-            Transform obj = commandList.GetChild(itemNum).transform;
-            
-            if (obj.childCount != 0) {
-                Transform child = obj.GetChild(0).transform;
-                child.parent = null;
-                Destroy(child.gameObject);
+        for (int list = 0; list < commandList.childCount; list ++) {
+            for (int itemNum = 0; itemNum < commandList.GetChild(list).childCount; itemNum++) {
+                Transform obj = commandList.GetChild(itemNum).transform;
+                
+                if (obj.childCount != 0) {
+                    Transform child = obj.GetChild(0).transform;
+                    child.parent = null;
+                    Destroy(child.gameObject);
+                }
             }
         }
         cmds = new List<int>();
     }
 
     private void AppedNewCommand(int i) {
-        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;       
-        for (int itemNum = 0; itemNum < commandList.childCount; itemNum++) {
-            Transform obj = commandList.GetChild(itemNum).transform;
-            
-            if (obj.childCount == 0) {
-                GameObject newObj = Instantiate(blocks[i].prefab);
-                newObj.transform.position = obj.position;
-                newObj.transform.parent = obj;
-                newObj.name = blocks[i].name;
-                newObj.transform.localScale = new Vector3(1,1,1);
-                break;
+        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;   
+        Debug.Log(commandList.childCount);
+        for (int list = 0; list < commandList.childCount; list++) {
+            for (int itemNum = 0; itemNum < commandList.GetChild(list).childCount; itemNum++) {
+                Transform obj = commandList.GetChild(itemNum).transform;
+                
+                if (obj.childCount == 0) {
+                    GameObject newObj = Instantiate(blocks[i].prefab);
+                    newObj.transform.position = obj.position;
+                    newObj.transform.parent = obj;
+                    newObj.name = blocks[i].name;
+                    newObj.transform.localScale = new Vector3(1,1,1);
+                    return;
+                }
             }
-        }
+        }    
         cmds.Add(i);
     }
 
