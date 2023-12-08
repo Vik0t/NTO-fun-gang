@@ -100,7 +100,7 @@ public class GroundBot : MonoBehaviour
         var hitObjectSpecs = hitObject.GetComponent<ObjectConfig>();
 
         if (hit.collider != null && hitObject.name != gameObject.name) {
-            if (hitObject.tag == "Pick" && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
+            if (hitObjectSpecs.IsPickable && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
                 alreadyCarryOn = true;
                 hit.transform.position = pickUpOrigin.position;
                 hit.transform.parent = pickUpOrigin;
