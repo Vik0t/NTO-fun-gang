@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2644452230584899366}
   - component: {fileID: 4367206133385648303}
-  - component: {fileID: 1845161320778476296}
   - component: {fileID: 2324780684908166611}
+  - component: {fileID: 3149474896743486798}
   m_Layer: 5
   m_Name: List
   m_TagString: Untagged
@@ -121,30 +121,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2287829085807289651}
   m_CullTransparentMesh: 1
---- !u!114 &1845161320778476296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287829085807289651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 1
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 140, y: 140}
-  m_Spacing: {x: -20, y: -35}
-  m_Constraint: 0
-  m_ConstraintCount: 4
 --- !u!223 &2324780684908166611
 Canvas:
   m_ObjectHideFlags: 0
@@ -168,6 +144,30 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &3149474896743486798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2287829085807289651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e777795a64934e3ebb6ed33ccc3c6ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  _circumradius: 52.95
+  _spacing: {x: 0, y: 0}
+  _startAxis: 0
+  _cellOrientation: 0
+  _constraint: 0
+  _constraintCount: 10
 --- !u!1001 &305973595502112479
 PrefabInstance:
   m_ObjectHideFlags: 0
