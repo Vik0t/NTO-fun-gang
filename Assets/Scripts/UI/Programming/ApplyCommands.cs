@@ -28,7 +28,7 @@ public class ApplyCommands : MonoBehaviour
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
     public GameObject[] buttons;
-    private Transform commandList;
+    public Transform commandList;
     public Image botChangeButton;
     private GameObject groundBot;
     private GameObject flyingBot;
@@ -52,8 +52,6 @@ public class ApplyCommands : MonoBehaviour
         battleBot = GameObject.FindGameObjectWithTag(bots[2].name);
         heavyBot  = GameObject.FindGameObjectWithTag(bots[3].name);
         shieldBot = GameObject.FindGameObjectWithTag(bots[4].name);
-
-        commandList = GameObject.FindGameObjectWithTag("CommandList").transform;
         mainPanel.SetActive(false);
     }
 

@@ -13,6 +13,7 @@ public class OptionsMenu : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         resolutions = Screen.resolutions;
 
         resolutionDropDown.ClearOptions();
@@ -22,7 +23,7 @@ public class OptionsMenu : MonoBehaviour
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRateRatio + "ãö";
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRateRatio + "ï¿½ï¿½";
             options.Add(option);
 
             if (resolutions[i].width == Screen.currentResolution.width &&
