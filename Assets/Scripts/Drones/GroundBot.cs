@@ -124,17 +124,22 @@ public class GroundBot : MonoBehaviour
     }
 
     IEnumerator Pick() {
-        RaycastHit2D hit;
-        if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
-        else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
-        GameObject hitObject = hit.transform.gameObject;
-        var hitObjectSpecs = hitObject.GetComponent<ObjectConfig>();
+        RaycastHit2D[] hit;
+        if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1); 
+        else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1);
+        
+        if (hit.Length > 1) {
+            for (int i = 0; i < hit.Length; i++){
+                GameObject obj = hit[i].transform.gameObject;
+                if (obj.GetComponent<ObjectConfig>() != null) {
+                    ObjectConfig objConfig = obj.GetComponent<ObjectConfig>();
 
-        if (hit.collider != null) {
-            if (hitObjectSpecs.IsPickable && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
-                alreadyCarryOn = true;
-                hit.transform.position = pickUpOrigin.position;
-                hit.transform.parent = pickUpOrigin;
+                    if (objConfig.IsPickable && !alreadyCarryOn && objConfig.weight <= maxLiftableWeight) {
+                        alreadyCarryOn = true;
+                        obj.transform.position = pickUpOrigin.position;
+                        obj.transform.parent = pickUpOrigin;
+                    }
+                }
             }
         }
         yield return null;
