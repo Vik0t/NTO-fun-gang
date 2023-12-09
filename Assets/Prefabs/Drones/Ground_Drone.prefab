@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 6972466575717086873}
   - component: {fileID: 6772193634849900051}
   - component: {fileID: 9107569643048006712}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Ground_Drone
   m_TagString: GroundBot
   m_Icon: {fileID: 0}
@@ -158,6 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 200
   jumpForce: 4.5
+  maxLiftableWeight: 10
+  isBeatable: 1
   origin: {fileID: 1320384566546722243}
   pickUpOrigin: {fileID: 3693933324987342231}
   putOrigin: {fileID: 4364637392339261749}

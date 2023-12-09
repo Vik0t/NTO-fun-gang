@@ -7,7 +7,6 @@ public class DoorButton : MonoBehaviour
 {
     public Sprite pressedSprite;
     public Sprite releasedSprite;
-    public List<string> activatedBy;
 
     public UnityEvent onPress;
     public UnityEvent onRelease;
@@ -21,7 +20,7 @@ public class DoorButton : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D coll) {
-        if (activatedBy.Contains(coll.tag)) {
+        if (coll.gameObject.GetComponent<FlightBot>() != null || coll.gameObject.GetComponent<GroundBot>() != null || coll.GetComponent<ObjectConfig>() != null || coll.GetComponent<Controller>() != null) {
             if (counter == 0) {
                 gameObject.GetComponent<AnimatorBooleanTransition>().SetState(true);
                 indicator.sprite = pressedSprite;
@@ -32,7 +31,7 @@ public class DoorButton : MonoBehaviour
     }
 
     void OnTriggerExit2D(Collider2D coll) {
-        if (activatedBy.Contains(coll.tag)) {
+        if (coll.gameObject.GetComponent<FlightBot>() != null || coll.gameObject.GetComponent<GroundBot>() != null || coll.GetComponent<ObjectConfig>() != null || coll.GetComponent<Controller>() != null) {
             counter--;
             if (counter == 0) {
                 gameObject.GetComponent<AnimatorBooleanTransition>().SetState(false);

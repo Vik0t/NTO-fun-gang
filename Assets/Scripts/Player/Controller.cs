@@ -121,11 +121,23 @@ public class Controller : MonoBehaviour
         RaycastHit2D hit3;
         float distance = 0.2f;
 
-        hit1 = Physics2D.Raycast(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, distance, groundLayer);
-        hit2 = Physics2D.Raycast(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, distance, groundLayer);
-        hit3 = Physics2D.Raycast(new Vector2(rayOrigins[2].position.x, rayOrigins[2].position.y), Vector2.down, distance, groundLayer);
+        hit1 = Physics2D.Raycast(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, distance);
+        hit2 = Physics2D.Raycast(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, distance);
+        hit3 = Physics2D.Raycast(new Vector2(rayOrigins[2].position.x, rayOrigins[2].position.y), Vector2.down, distance);
         
-        if (hit1.collider != null || hit2.collider != null || hit3.collider != null)
+        bool IsTruce = false;
+
+        if (hit1.collider != null) {
+            if (hit1.collider.gameObject.tag != "Player") IsTruce = true;
+        }
+        else if (hit2.collider != null) {
+            if (hit2.collider.gameObject.tag != "Player") IsTruce = true;
+        }
+        else if (hit3.collider != null) {
+            if (hit3.collider.gameObject.tag != "Player") IsTruce = true;
+        }
+
+        if (IsTruce)
         {
             isGrounded = true;
             playerSpeed = playerSpeedConst;

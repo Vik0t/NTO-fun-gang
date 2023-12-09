@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 7620663178449357486}
   - component: {fileID: 185430000041030493}
   - component: {fileID: 4204312260271034534}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Shield_Drone
   m_TagString: ShieldBot
   m_Icon: {fileID: 0}

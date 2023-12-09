@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1683931547861218247}
   - component: {fileID: 5974571460431345841}
   - component: {fileID: 5008019165423020678}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Battle_Drone
   m_TagString: BattleBot
   m_Icon: {fileID: 0}
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 175
+  maxLiftableWeight: 10
   origin: {fileID: 6746287530469735473}
   pickUpOrigin: {fileID: 1812932114960701703}
   putOrigin: {fileID: 7066365691834221068}

@@ -14,7 +14,11 @@ public enum BotCommands {
     Pick,
     Put,
     Attack,
-    If
+    BreakIf,
+    IfEnemy,
+    IfWall,
+    IfBox,
+    IfBot
 }
 
 public class ApplyCommands : MonoBehaviour
@@ -36,6 +40,8 @@ public class ApplyCommands : MonoBehaviour
     public GameObject mainPanel;
     public TMP_Text listIndexIndicator;
     public TMP_Text listCounter;
+    private bool isStartedCondition = false;
+    public Animator warningCondition;
 
     private void Start() {
         UpdateAvaliableList();
@@ -87,17 +93,18 @@ public class ApplyCommands : MonoBehaviour
 
     public void Delete(bool isAll) {
         if (isAll) bots[currentBotInd].chosenCommands = new List<int>();
+        isStartedCondition = false;
         for (int list = 0; list < commandList.childCount; list++) {
             Transform listObj = commandList.GetChild(list);
             for (int itemNum = 0; itemNum < listObj.childCount; itemNum++) {
                 
                 Transform obj = listObj.GetChild(itemNum).transform;
-                
                 if (obj.childCount != 0) {
                     Transform child = obj.GetChild(0).transform;
                     child.parent = null;
                     Destroy(child.gameObject);
                 }
+                obj.GetComponent<ColorChanging>().ChangeColor(isStartedCondition);
             }
         }
         cmds = new List<int>();
@@ -111,12 +118,24 @@ public class ApplyCommands : MonoBehaviour
                 Transform obj = listObj.GetChild(itemNum).transform;
                 
                 if (obj.childCount == 0) {
+                    if (i == (int)BotCommands.IfEnemy || i == (int)BotCommands.IfWall || i == (int)BotCommands.IfBox || i == (int)BotCommands.IfBot) {
+                        if (isStartedCondition) {
+                            warningCondition.Play("Open");
+                            return;
+                        } else isStartedCondition = true;
+                    }
+
+                    if (i == (int)BotCommands.BreakIf) isStartedCondition = false;
+                    
                     GameObject newObj = Instantiate(blocks[i].prefab);
                     newObj.transform.position = obj.position;
-                    newObj.transform.parent = obj;
+                    newObj.transform.SetParent(obj, false);
                     newObj.name = blocks[i].name;
-                    newObj.transform.localScale = new Vector3(1,1,1);
+
+                    
+                    obj.GetComponent<ColorChanging>().ChangeColor(isStartedCondition);
                     cmds.Add(i);
+                    bots[currentBotInd].chosenCommands = cmds;
                     return;
                 }
             }

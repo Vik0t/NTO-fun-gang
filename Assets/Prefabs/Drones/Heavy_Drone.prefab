@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8200636269679249932}
   - component: {fileID: 8050691817043579467}
   - component: {fileID: 1897279869754060369}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Heavy_Drone
   m_TagString: HeavyBot
   m_Icon: {fileID: 0}

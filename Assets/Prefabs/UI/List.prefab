@@ -292,7 +292,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 1
   _circumradius: 50
-  _spacing: {x: -20, y: -22}
+  _spacing: {x: -15, y: -20}
   _startAxis: 0
   _cellOrientation: 0
   _constraint: 0

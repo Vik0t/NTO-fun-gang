@@ -19,6 +19,10 @@ public class FlightBot : MonoBehaviour
     public GameObject bullet;
     public GameObject bulletSound;
 
+    // Conditions
+    private bool isFounded = false;
+    private bool isStartedCondition = false;
+
     void Start() {
         groundLayer = LayerMask.GetMask("Ground");
         interactiveLayer = LayerMask.GetMask("Interactive");
@@ -35,6 +39,9 @@ public class FlightBot : MonoBehaviour
 
     IEnumerator AcceptCommandList(List<int> commands) {
         foreach (int i in commands) {
+            if (isStartedCondition) {
+                if (!isFounded && i != (int)BotCommands.BreakIf) continue;
+            }
             switch (i) {
                 case (int)BotCommands.Move:
                     yield return Move();
@@ -57,6 +64,25 @@ public class FlightBot : MonoBehaviour
                 case (int)BotCommands.Attack:
                     yield return Attack();
                     break;
+                case (int)BotCommands.IfEnemy:
+                    isStartedCondition = true;
+                    yield return Scan("Enemy");
+                    break;
+                case (int)BotCommands.IfWall:
+                    isStartedCondition = true;
+                    yield return Scan("Wall");
+                    break;
+                case (int)BotCommands.IfBox:
+                    isStartedCondition = true;
+                    yield return Scan("Box");
+                    break;
+                case (int)BotCommands.IfBot:
+                    isStartedCondition = true;
+                    yield return Scan("Bot");
+                    break;
+                case (int)BotCommands.BreakIf:
+                    isStartedCondition = false;
+                    break;
             }
         }
     }
@@ -69,18 +95,22 @@ public class FlightBot : MonoBehaviour
 
     IEnumerator Move() {
         anim.Play("Run");
-        RaycastHit2D hit;
-        
-        while (true) { 
-            if (dir == 1) hit = Physics2D.Raycast(origin.position, Vector2.right, 1, groundLayer); 
-            else hit = Physics2D.Raycast(origin.position, Vector2.left, 1, groundLayer);
-            
-            if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
-                anim.Play("Idle");
-                break;
+        RaycastHit2D[] hit;
+        bool tauched = false;
+        while (true) {
+            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1); 
+
+            for (int i = 0; i < hit.Length; i++) {
+                if (hit[i].transform.gameObject.name != gameObject.name) {
+                    anim.Play("Idle");
+                    tauched = true;
+                    break;
+                }
+                rb.velocity = new Vector2(speed * dir * Time.fixedDeltaTime, rb.velocity.y);
+                yield return null;
             }
-            rb.velocity = new Vector2(speed * dir * Time.fixedDeltaTime, rb.velocity.y);
-            yield return null;
+            if (tauched) break;
         }
     }
 
@@ -96,7 +126,7 @@ public class FlightBot : MonoBehaviour
             if (OnUp) hit = Physics2D.Raycast(origin.position, Vector2.up, 0.25f, groundLayer); 
             else hit = Physics2D.Raycast(origin.position, Vector2.down, 0.25f, groundLayer); 
 
-            if (hit.collider != null && hit.transform.gameObject.name != gameObject.name) {
+            if (hit.collider != null) {
                 anim.Play("Idle");
                 break;
             }
@@ -112,7 +142,7 @@ public class FlightBot : MonoBehaviour
         GameObject hitObject = hit.transform.gameObject;
         var hitObjectSpecs = hitObject.GetComponent<ObjectConfig>();
 
-        if (hit.collider != null && hitObject.name != gameObject.name) {
+        if (hit.collider != null) {
             if (hitObjectSpecs.IsPickable && !alreadyCarryOn && hitObjectSpecs.weight <= maxLiftableWeight) {
                 alreadyCarryOn = true;
                 hit.transform.position = pickUpOrigin.position;
@@ -136,5 +166,36 @@ public class FlightBot : MonoBehaviour
         Instantiate(bulletSound);
         Instantiate(bullet, putOrigin.position, putOrigin.rotation);
         yield return new WaitForSeconds(1f);
+    }
+
+    IEnumerator Scan(string type) {
+        isFounded = false;
+        RaycastHit2D[] hit;
+        if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1.5f); 
+        else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1.5f);
+
+        if (hit.Length > 1) {
+            for (int i = 0; i < hit.Length; i++) {
+                GameObject obj = hit[i].transform.gameObject;
+                if (obj.name != gameObject.name) {
+                    switch (type) {
+                        case "Enemy":
+                            if (obj.tag == "Respawn") isFounded = true;
+                            break;
+                        case "Wall":
+                            if (obj.layer == 3) isFounded = true;
+                            break;
+                        case "Box":
+                            if (obj.GetComponent<ObjectConfig>() != null) isFounded = true;
+                            break;
+                        case "Bot":
+                            if (obj.GetComponent<GroundBot>() != null || obj.GetComponent<FlightBot>() != null) isFounded = true;
+                            break;
+                    }
+                }
+            }
+        }
+        Debug.Log(isFounded);
+        yield return null;
     }
 }
