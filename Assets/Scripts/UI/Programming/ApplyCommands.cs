@@ -24,7 +24,6 @@ public class ApplyCommands : MonoBehaviour
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
     public GameObject[] buttons;
-    public GameObject[] operators;
     private Transform commandList;
     public Image botChangeButton;
     private GameObject groundBot;
