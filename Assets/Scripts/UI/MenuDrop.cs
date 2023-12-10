@@ -9,10 +9,17 @@ public class MenuDrop : MonoBehaviour
 {   
     [SerializeField] private GameObject panel;
     [SerializeField] private Button selectionButton;
-    
+
+    void Start () {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     public void OpenPanel(InputAction.CallbackContext value) {
         if (Controller.control) {
             Controller.control = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             panel.SetActive(true);
             selectionButton.Select();
         }

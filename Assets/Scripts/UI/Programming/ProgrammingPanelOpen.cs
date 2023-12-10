@@ -12,6 +12,8 @@ public class ProgrammingPanelOpen : MonoBehaviour
     public void OpenProgrammingPanel(InputAction.CallbackContext value) {
         if (Controller.control) {
             Controller.control = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             panel.SetActive(true);
             firstButton.Select();
         }
@@ -19,6 +21,8 @@ public class ProgrammingPanelOpen : MonoBehaviour
 
     public void CloseProgrammingPanel() {
         Controller.control = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         panel.SetActive(false);
     }
 }

@@ -97,7 +97,8 @@ GameObject:
   - component: {fileID: 7564445616921711528}
   - component: {fileID: 380942069493248454}
   - component: {fileID: 1696133449776714487}
-  - component: {fileID: 7461304936542176026}
+  - component: {fileID: 7965008425719352148}
+  - component: {fileID: 8481129139847598052}
   m_Layer: 3
   m_Name: Box
   m_TagString: Untagged
@@ -116,7 +117,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5976396920814408470}
   m_Father: {fileID: 0}
@@ -231,7 +232,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -257,7 +258,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
---- !u!114 &7461304936542176026
+--- !u!114 &7965008425719352148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,4 +271,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPickable: 1
-  weight: 5
+  weight: 10
+--- !u!114 &8481129139847598052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058199417588549651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e67e54a3b55dca49993db472ba2e88c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

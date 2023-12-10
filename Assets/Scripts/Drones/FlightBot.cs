@@ -25,6 +25,7 @@ public class FlightBot : MonoBehaviour
 
     private GameObject carriedObject;
     private Rigidbody2D carriedRigidbody;
+    public float distance = 1f;
     public float carryingDistance = 2f;
     public GameObject pickupBeam;
 
@@ -105,8 +106,8 @@ public class FlightBot : MonoBehaviour
         RaycastHit2D[] hit;
         bool tauched = false;
         while (true) {
-            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, alreadyCarryOn ? carryingDistance : 1); 
-            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, alreadyCarryOn ? carryingDistance : 1); 
+            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, alreadyCarryOn ? carryingDistance : distance); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, alreadyCarryOn ? carryingDistance : distance); 
 
             for (int i = 0; i < hit.Length; i++) {
                 if (hit[i].transform.gameObject != gameObject && hit[i].transform.gameObject != carriedObject) {

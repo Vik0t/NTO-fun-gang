@@ -28,7 +28,6 @@ public class Controller : MonoBehaviour
     [Tooltip ("How much player speed is reduced in the air")] public float airSpeedMod = 0.56f;
     public float jumpPower = 0;
     public LayerMask groundLayer;
-    public List<string> movingTags;
     public static bool control; // Variable for cutscenes => Turn off/on movement ability
     private bool alive;
     private Animator deathAnim;
@@ -36,6 +35,8 @@ public class Controller : MonoBehaviour
     public Transform particleOrigin;
     public RaySegment groundRay;
     public RaySegment[] stepRays;
+    public GameObject[] deathEffects;
+    public GameObject[] winParticles;
 
     [Tooltip ("Max time beetween input and jump")] public float bufferingTime = 0.1f;
     public float stepHeight = 0.1f;
@@ -129,25 +130,48 @@ public class Controller : MonoBehaviour
             Instantiate(GroundEffect, particleOrigin.transform.position, Quaternion.identity);
         }
         
-        if (movingTags.Contains(collision.gameObject.tag)) {
+        if (collision.gameObject.GetComponent<Platform>() != null) {
             gameObject.transform.parent = collision.transform;
+            rb.sharedMaterial.friction = 5f;
         }
 
         if (collision.gameObject.tag == "Respawn") {
             alive = false;
             StartCoroutine(DeathAnim());
         }
+
+        if (collision.gameObject.tag == "Finish") {
+            alive = false;
+            StartCoroutine(WinAnim());
+        }
     }
 
     IEnumerator DeathAnim() {
+        for (int i = 0; i < deathEffects.Length; i++) {
+            Instantiate(deathEffects[i], transform.position, transform.rotation);
+        }
         deathAnim.Play("Close");
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    IEnumerator WinAnim() {
+        for (int i = 0; i < winParticles.Length; i++) {
+            Instantiate(winParticles[i], transform.position, transform.rotation);
+        }
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(5f);
+        
+        int currSceneInd = SceneManager.GetActiveScene().buildIndex;
+        currSceneInd++;
+        if (currSceneInd >= SceneManager.sceneCountInBuildSettings) currSceneInd = 0;
+        SceneManager.LoadScene(currSceneInd);
+    }
+
     void OnCollisionExit2D(Collision2D collision) {
-        if (movingTags.Contains(collision.gameObject.tag)) {
+        if (collision.gameObject.GetComponent<Platform>() != null) {
             gameObject.transform.parent = null;
+            rb.sharedMaterial.friction = 0f;
         }
     }
 
