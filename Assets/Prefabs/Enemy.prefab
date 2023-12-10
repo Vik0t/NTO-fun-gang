@@ -137,7 +137,7 @@ MonoBehaviour:
   lookRange: 4
   reloadTime: 1
   OnlyNamprolom: 0
-  isStayig: 0
+  isStayig: 1
   isFlying: 1
   bullet: {fileID: 4296346466071205385, guid: 7a60bdb1f39e5b04191f798d26b48bfc, type: 3}
   bulletSound: {fileID: 7628851731553756756, guid: f4c79e6ea3b0ded4985ef9e37074f104, type: 3}
