@@ -24,7 +24,7 @@ public enum BotCommands {
 public class ApplyCommands : MonoBehaviour
 {
     public List<int> cmds;
-    private int currentBotInd;
+    private int currentBotInd = 0;
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
     public GameObject[] buttons;
@@ -42,6 +42,7 @@ public class ApplyCommands : MonoBehaviour
     public TMP_Text listCounter;
     private bool isStartedCondition = false;
     public Animator warningCondition;
+    private List<int> foundedDrones = new List<int>();
 
     private void Start() {
         UpdateAvaliableList();
@@ -52,6 +53,14 @@ public class ApplyCommands : MonoBehaviour
         battleBot = GameObject.FindGameObjectWithTag(bots[2].name);
         heavyBot  = GameObject.FindGameObjectWithTag(bots[3].name);
         shieldBot = GameObject.FindGameObjectWithTag(bots[4].name);
+
+        if (groundBot != null) foundedDrones.Add(0);
+        if (flyingBot != null) foundedDrones.Add(1);
+        if (battleBot != null) foundedDrones.Add(2);
+        if (heavyBot != null)  foundedDrones.Add(3);
+        if (shieldBot != null) foundedDrones.Add(4);
+        
+        ChangeBot(false);
         mainPanel.SetActive(false);
     }
 
@@ -77,15 +86,26 @@ public class ApplyCommands : MonoBehaviour
 
     public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-    public void ChangeBot() {
-        bots[currentBotInd].chosenCommands = cmds;
-        Delete(false);
-        currentBotInd += 1;
-        if (currentBotInd >= bots.Count) currentBotInd = 0;
+    public void ChangeBot(bool clearly) {
+        if (clearly) {
+            bots[currentBotInd].chosenCommands = cmds;
+            Delete(false);
+            ChangeBotIndex();
+        }
+        else currentBotInd = foundedDrones[0];
+
         UpdateAvaliableList();
+
         botChangeButton.sprite = bots[currentBotInd].img;
         foreach (int i in bots[currentBotInd].chosenCommands) {
             AppedNewCommand(i);
+        }
+    }
+
+    private void ChangeBotIndex() {
+        if (foundedDrones.Count > 1) {
+            currentBotInd += 1;
+            if (currentBotInd >= foundedDrones.Count) currentBotInd = 0;
         }
     }
 

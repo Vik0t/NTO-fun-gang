@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 232549399}
   - component: {fileID: 232549398}
   - component: {fileID: 232549401}
+  - component: {fileID: 232549402}
   m_Layer: 0
   m_Name: ExitBtn
   m_TagString: Untagged
@@ -428,6 +429,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &232549402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232549396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &282103911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,6 +1096,7 @@ GameObject:
   - component: {fileID: 572748246}
   - component: {fileID: 572748245}
   - component: {fileID: 572748248}
+  - component: {fileID: 572748249}
   m_Layer: 0
   m_Name: ResolutionDropdown
   m_TagString: Untagged
@@ -1241,6 +1257,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &572748249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572748243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &861016326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,6 +1282,7 @@ GameObject:
   - component: {fileID: 861016327}
   - component: {fileID: 861016328}
   - component: {fileID: 861016329}
+  - component: {fileID: 861016330}
   m_Layer: 0
   m_Name: VolumeSlider
   m_TagString: Untagged
@@ -1365,6 +1396,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &861016330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861016326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &912563800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,6 +1840,7 @@ GameObject:
   - component: {fileID: 1375487485}
   - component: {fileID: 1375487484}
   - component: {fileID: 1375487487}
+  - component: {fileID: 1375487488}
   m_Layer: 0
   m_Name: StartBtn
   m_TagString: Untagged
@@ -1936,6 +1982,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1375487488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375487482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &1387615964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,6 +2232,8 @@ GameObject:
   - component: {fileID: 1451663326}
   - component: {fileID: 1451663325}
   - component: {fileID: 1451663324}
+  - component: {fileID: 1451663328}
+  - component: {fileID: 1451663329}
   m_Layer: 0
   m_Name: BackBtn
   m_TagString: Untagged
@@ -2217,7 +2279,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.18039216}
@@ -2316,6 +2378,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451663322}
   m_CullTransparentMesh: 1
+--- !u!95 &1451663328
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451663322}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5d5d5eb72b63671478f3b642d71add1a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1451663329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451663322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &1468755473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,6 +2504,7 @@ GameObject:
   - component: {fileID: 1482189690}
   - component: {fileID: 1482189689}
   - component: {fileID: 1482189692}
+  - component: {fileID: 1482189693}
   m_Layer: 0
   m_Name: OptionsBtn
   m_TagString: Untagged
@@ -2572,6 +2670,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1482189693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482189687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &1524158434
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,6 +3051,7 @@ GameObject:
   - component: {fileID: 1713392251}
   - component: {fileID: 1713392252}
   - component: {fileID: 1713392253}
+  - component: {fileID: 1713392254}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -3037,6 +3150,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1713392254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713392250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &1859876877
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,6 +3175,7 @@ GameObject:
   - component: {fileID: 1859876878}
   - component: {fileID: 1859876879}
   - component: {fileID: 1859876880}
+  - component: {fileID: 1859876881}
   m_Layer: 0
   m_Name: FullScreenToggle
   m_TagString: Untagged
@@ -3157,6 +3285,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1859876881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859876877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff53dc04c03d5f748a6d86b5951c5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundsSelect: {fileID: 8508819198749516877, guid: bce098b8e28b7e14ba17cd5b2eb8ff63, type: 3}
+  soundsPress: {fileID: 4152137826504007806, guid: 1a39ffa187c3cd04fbeaba4f348ce8b6, type: 3}
 --- !u!1 &1959226269
 GameObject:
   m_ObjectHideFlags: 0

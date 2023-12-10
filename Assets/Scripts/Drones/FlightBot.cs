@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FlightBot : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class FlightBot : MonoBehaviour
     private int groundLayer;
     private int interactiveLayer;
     public float maxLiftableWeight = 10.0f;
+    public bool isBeatable;
     private Rigidbody2D rb;
     private Animator anim;
     public Transform origin;
@@ -18,6 +20,8 @@ public class FlightBot : MonoBehaviour
     private bool alreadyCarryOn = false;
     public GameObject bullet;
     public GameObject bulletSound;
+    public GameObject[] deathEffectsAndSounds;
+    private Animator deathAnim;
 
     // Conditions
     private bool isFounded = false;
@@ -26,6 +30,7 @@ public class FlightBot : MonoBehaviour
     void Start() {
         groundLayer = LayerMask.GetMask("Ground");
         interactiveLayer = LayerMask.GetMask("Interactive");
+        deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
         
@@ -117,21 +122,27 @@ public class FlightBot : MonoBehaviour
     IEnumerator Vertical(bool OnUp) {
         rb.velocity = Vector2.zero;
         anim.Play("Run");
-        RaycastHit2D hit;
+        RaycastHit2D[] hit;
         int verticalDir = 0;
+        bool tauched = false;
 
         if (OnUp) verticalDir = 1;
         else verticalDir = -1;
-        while (true) {
-            if (OnUp) hit = Physics2D.Raycast(origin.position, Vector2.up, 0.25f, groundLayer); 
-            else hit = Physics2D.Raycast(origin.position, Vector2.down, 0.25f, groundLayer); 
 
-            if (hit.collider != null) {
-                anim.Play("Idle");
-                break;
+        while (true) {
+            if (OnUp) hit = Physics2D.RaycastAll(origin.position, Vector2.up, 0.35f); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.down, 0.35f); 
+
+            for (int i = 0; i < hit.Length; i++) {
+                if (hit[i].transform.gameObject.name != gameObject.name) {
+                    anim.Play("Idle");
+                    tauched = true;
+                    break;
+                }
+                rb.velocity = new Vector2(rb.velocity.x, speed * verticalDir * Time.fixedDeltaTime);
+                yield return null;
             }
-            rb.velocity = new Vector2(rb.velocity.x, speed * verticalDir * Time.fixedDeltaTime);
-            yield return null;
+            if (tauched) break;
         }
     }
 
@@ -200,7 +211,24 @@ public class FlightBot : MonoBehaviour
                 }
             }
         }
-        Debug.Log(isFounded);
         yield return null;
+    }
+    
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Respawn") {
+            if (isBeatable) StartCoroutine(DeathAnim());
+        }
+    }
+
+    IEnumerator DeathAnim() {
+        foreach (GameObject i in deathEffectsAndSounds) {
+            Instantiate(i, transform.position, transform.rotation);
+        }
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

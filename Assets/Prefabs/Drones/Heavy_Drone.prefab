@@ -134,6 +134,9 @@ MonoBehaviour:
   putOrigin: {fileID: 7271928056693021159}
   bullet: {fileID: 4296346466071205385, guid: 9298af12ce8e76e489e2eddda29ee786, type: 3}
   bulletSound: {fileID: 5378246135031682339, guid: fb97030bbe619fc4c8621414c501e0ee, type: 3}
+  deathEffectsAndSounds:
+  - {fileID: 956284215900583197, guid: 5c7aec68f100c3249a535a22e4beaea5, type: 3}
+  - {fileID: 7799196604996391998, guid: 77c0a439ea9b6e44c9d21244d01cc637, type: 3}
 --- !u!50 &8200636269679249932
 Rigidbody2D:
   serializedVersion: 4
@@ -147,7 +150,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -193,7 +196,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -1.87, y: -0.14}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -204,7 +207,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.59, y: 0.51}
+  m_Size: {x: 3.38, y: 4.27}
   m_EdgeRadius: 0
 --- !u!331 &1897279869754060369
 SpriteMask:
@@ -282,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 1941684456641302942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.858, y: 0.07, z: 0}
+  m_LocalPosition: {x: 1.94, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -344,7 +347,7 @@ Transform:
   m_GameObject: {fileID: 8631239839919371756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.53, z: 0}
+  m_LocalPosition: {x: -1.67, y: 4.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

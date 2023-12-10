@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GroundBot : MonoBehaviour
 {
@@ -26,16 +27,19 @@ public class GroundBot : MonoBehaviour
     public GameObject bullet;
     public GameObject bulletSound;
 
-    // Conditions
+    [Header("Other")]
     private bool isFounded = false;
     private bool isStartedCondition = false;
+    public GameObject[] deathEffectsAndSounds;
+    private Animator deathAnim;
 
     void Start() {
         groundLayer = LayerMask.GetMask("Ground");
         interactiveLayer = LayerMask.GetMask("Interactive");
+        deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
+
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
-        
         if (transform.rotation.y == 0) dir = 1;
         else dir = -1;
     }
@@ -188,7 +192,24 @@ public class GroundBot : MonoBehaviour
                 }
             }
         }
-        Debug.Log(isFounded);
         yield return null;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Respawn") {
+            if (isBeatable) StartCoroutine(DeathAnim());
+        }
+    }
+
+    IEnumerator DeathAnim() {
+        foreach (GameObject i in deathEffectsAndSounds) {
+            Instantiate(i, transform.position, transform.rotation);
+        }
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

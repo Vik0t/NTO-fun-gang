@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f10f808d1e13254db802adeaa4328a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 40
+  playerSpeed: 50
   jumpPower: 10
   rayOrigins:
   - {fileID: 946099228315034782}
