@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8196343676378355378}
   - component: {fileID: 8138104943650996721}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.90234375, y: 0.3046875}
+  m_Size: {x: 0.8984375, y: 0.3046875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8199280528962228594}
   - component: {fileID: 1462628513009550230}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6041339301887973059}
   - component: {fileID: 3528859107278661503}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,9 @@ GameObject:
   - component: {fileID: 5115217836196484247}
   - component: {fileID: 7841082209818924447}
   - component: {fileID: 8900592297901538562}
-  m_Layer: 3
+  - component: {fileID: 1852106393366386633}
+  - component: {fileID: 9132446744533077070}
+  m_Layer: 6
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,3 +389,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paramName: Speed
+--- !u!114 &1852106393366386633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219548764825162748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03aedf447f837964190fa64e57683c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pressedSprite: {fileID: -845733282, guid: d9db5070e07345e40a958ef10b7c9168, type: 3}
+  releasedSprite: {fileID: 0}
+  onPress:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  indicator: {fileID: 8138104943650996721}
+--- !u!61 &9132446744533077070
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219548764825162748}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.115234375}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.2304688, y: 0.23046875}
+    newSize: {x: 1.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.2304688, y: 0.23046875}
+  m_EdgeRadius: 0

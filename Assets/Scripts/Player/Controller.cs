@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -29,6 +30,8 @@ public class Controller : MonoBehaviour
     public LayerMask groundLayer;
     public List<string> movingTags;
     public static bool control; // Variable for cutscenes => Turn off/on movement ability
+    private bool alive;
+    private Animator deathAnim;
 
     public Transform particleOrigin;
     public RaySegment groundRay;
@@ -47,17 +50,18 @@ public class Controller : MonoBehaviour
         controls = new Gameplay();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        control = true;
+        control = alive = true;
         gun = gameObject.GetComponent<Gun>();
         menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
         programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
         cvm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cvm.Follow = gameObject.transform;
+        deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        if (control)
+        if (control && alive)
         {
             TryJump ();
             ApplyStep ();
@@ -128,6 +132,17 @@ public class Controller : MonoBehaviour
         if (movingTags.Contains(collision.gameObject.tag)) {
             gameObject.transform.parent = collision.transform;
         }
+
+        if (collision.gameObject.tag == "Respawn") {
+            alive = false;
+            StartCoroutine(DeathAnim());
+        }
+    }
+
+    IEnumerator DeathAnim() {
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void OnCollisionExit2D(Collision2D collision) {

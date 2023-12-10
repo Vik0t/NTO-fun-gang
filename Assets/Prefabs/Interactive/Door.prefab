@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 6004609733573444005}
   - component: {fileID: 3121340763484942000}
   - component: {fileID: 8075023966512016013}
+  - component: {fileID: 1333831631405737253}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -221,6 +222,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paramName: Speed
+--- !u!114 &1333831631405737253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130527305108279120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4caefc9a1cc87d408c8f1404e8c8435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4148833814088623573
 GameObject:
   m_ObjectHideFlags: 0
