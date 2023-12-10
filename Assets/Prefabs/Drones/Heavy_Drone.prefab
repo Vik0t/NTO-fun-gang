@@ -50,7 +50,7 @@ Animator:
   m_GameObject: {fileID: 1849264875701112538}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9999fe81b98067e408eb48791a696d9a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 28048011ac63e244097c7bb1a68d9591, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 200
-  jumpForce: 0.001
+  jumpForce: 0
   maxLiftableWeight: 100
   isBeatable: 1
   origin: {fileID: 8465627592118536617}
@@ -285,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 1941684456641302942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1.98, y: -0.15, z: 0}
+  m_LocalPosition: {x: 1.94, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -316,7 +316,7 @@ Transform:
   m_GameObject: {fileID: 7297193688235103382}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.75, y: 0.03, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -347,7 +347,7 @@ Transform:
   m_GameObject: {fileID: 8631239839919371756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.67, y: 3.54, z: 0}
+  m_LocalPosition: {x: -1.67, y: 4.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

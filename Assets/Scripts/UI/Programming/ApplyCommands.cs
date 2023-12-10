@@ -90,7 +90,7 @@ public class ApplyCommands : MonoBehaviour
         if (clearly) {
             bots[currentBotInd].chosenCommands = cmds;
             Delete(false);
-            currentBotInd = ChangeBotIndex(currentBotInd);
+            ChangeBotIndex();
         }
         else currentBotInd = foundedDrones[0];
 
@@ -102,13 +102,11 @@ public class ApplyCommands : MonoBehaviour
         }
     }
 
-    private int ChangeBotIndex(int value) {
+    private void ChangeBotIndex() {
         if (foundedDrones.Count > 1) {
-            int k = foundedDrones.IndexOf(value)+1;
-            if (k >= foundedDrones.Count) k = 0;
-            return foundedDrones[k];
+            currentBotInd += 1;
+            if (currentBotInd >= foundedDrones.Count) currentBotInd = 0;
         }
-        else return value;
     }
 
     public void Delete(bool isAll) {
