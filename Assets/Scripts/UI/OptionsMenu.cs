@@ -13,7 +13,6 @@ public class OptionsMenu : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         resolutions = Screen.resolutions;
 
         resolutionDropDown.ClearOptions();

@@ -8,6 +8,7 @@ public class ProgrammingPanelOpen : MonoBehaviour
 {
     public GameObject panel;
     public Button firstButton;
+    void Start() => Cursor.lockState = CursorLockMode.Locked;
 
     public void OpenProgrammingPanel(InputAction.CallbackContext value) {
         if (Controller.control) {
