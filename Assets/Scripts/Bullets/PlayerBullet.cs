@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour {
     public GameObject particle;
-    public int bulletSpeed;
+    public float bulletSpeed;
+
+    private Rigidbody2D rb;
 
     void Start() {
+        rb = GetComponent<Rigidbody2D> ();
         StartCoroutine(DestroyTime(0.8f));
     }
-    void Update() => transform.Translate(Vector2.left * Time.deltaTime * bulletSpeed);
+    void Update() {
+        rb.velocity = transform.right * bulletSpeed;
+    }
 
 
     void OnCollisionEnter2D(Collision2D collision)

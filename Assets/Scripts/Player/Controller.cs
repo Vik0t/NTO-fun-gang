@@ -24,13 +24,19 @@ public class Controller : MonoBehaviour
     // Movement
     private bool isGrounded;
     public float playerSpeed = 0;
-    private float playerSpeedConst = 0;
+    [Tooltip ("How much player speed is reduced in the air")] public float airSpeedMod = 0.56f;
     public float jumpPower = 0;
-    private int groundLayer = 3;
-    public Transform[] rayOrigins;
-    private bool lastDeg;
+    public LayerMask groundLayer;
     public List<string> movingTags;
     public static bool control; // Variable for cutscenes => Turn off/on movement ability
+
+    public Transform particleOrigin;
+    public RaySegment groundRay;
+    public RaySegment[] stepRays;
+
+    [Tooltip ("Max time beetween input and jump")] public float bufferingTime = 0.1f;
+    public float stepHeight = 0.1f;
+    private float jumpPressTime = float.NegativeInfinity;
 
     
     // Effects && Sounds
@@ -41,9 +47,7 @@ public class Controller : MonoBehaviour
         controls = new Gameplay();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        control = lastDeg = true;
-        groundLayer = LayerMask.GetMask("Ground");
-        playerSpeedConst = playerSpeed;
+        control = true;
         gun = gameObject.GetComponent<Gun>();
         menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
         programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
@@ -55,34 +59,17 @@ public class Controller : MonoBehaviour
     {
         if (control)
         {
-            GroundCheck();
-            MovePlayer();
-            if (!isGrounded) anim.Play("Jump");
+            TryJump ();
+            ApplyStep ();
+            GroundCheck ();
+            MovePlayer ();    
         }
         else {
-            anim.Play("Idle");
+            anim.SetBool ("IsMoving", false);
             rb.velocity = Vector2.zero;
         }
-    }
-
-    // Movement inputs init
-    private void OnEnable() {
-        controls.Enable();
-        controls.Player.Move.performed += OnMovePerformed;
-        controls.Player.Move.canceled += OnMoveCanceled;
-        controls.Player.Jump.performed += PlayerJump;
-        controls.Player.Fire.performed += gun.PlayerFire;
-        controls.Player.Exit.performed += menuDrop.OpenPanel;
-        controls.Player.Program.performed += programming.OpenProgrammingPanel;
-    }
-
-    private void OnDisable() {
-        controls.Disable();
-        controls.Player.Move.performed -= OnMovePerformed;
-        controls.Player.Move.canceled -= OnMoveCanceled;
-        controls.Player.Jump.performed -= PlayerJump;
-        controls.Player.Exit.performed -= menuDrop.OpenPanel;
-        controls.Player.Program.performed -= programming.OpenProgrammingPanel;
+        anim.SetFloat ("VerticalSpeed", rb.velocity.y);
+        anim.SetBool ("IsGrounded", isGrounded);
     }
 
     private void OnMovePerformed(InputAction.CallbackContext value) => movement = value.ReadValue<Vector2>();
@@ -90,62 +77,52 @@ public class Controller : MonoBehaviour
     
     
     
-    void PlayerJump(InputAction.CallbackContext value) {
-        if (isGrounded && control)  {
+    void TryJump () {
+        if (isGrounded && (Time.time - jumpPressTime) < bufferingTime)  {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
     }
 
-    private void MovePlayer()
-    {
-        if (movement.x > 0 && lastDeg) Rotation();
-        if (movement.x < 0 && !lastDeg) Rotation();
+    private void MovePlayer () {
         if (movement.x != 0) {
-            rb.velocity = new Vector2(movement.x * playerSpeed * Time.fixedDeltaTime * 10, rb.velocity.y);
-            if (isGrounded) anim.Play("Run");
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign (movement.x);
+            transform.localScale = scale;
         }
-        else {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            if (isGrounded) anim.Play("Idle");
-        }
+        anim.SetBool ("IsMoving", movement.x != 0);
+        rb.velocity = new Vector2(movement.x * playerSpeed * Time.fixedDeltaTime * 10 * (isGrounded ? 1 : airSpeedMod), rb.velocity.y);
     }
 
-    private void GroundCheck()
-    {
-        RaycastHit2D hit1;
-        RaycastHit2D hit2;
-        float distance = 0.2f;
-
-        hit1 = Physics2D.Raycast(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, distance, groundLayer);
-        hit2 = Physics2D.Raycast(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, distance, groundLayer);
-        
-        Debug.DrawRay(new Vector2(rayOrigins[0].position.x, rayOrigins[0].position.y), Vector2.down, Color.green);
-        Debug.DrawRay(new Vector2(rayOrigins[1].position.x, rayOrigins[1].position.y), Vector2.down, Color.green);
-        
-        if (hit1.collider != null || hit2.collider != null)
-        {
-            isGrounded = true;
-            playerSpeed = playerSpeedConst;
-        }
-        else 
-        {
-            isGrounded = false;
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            playerSpeed = playerSpeedConst / 1.8f;
-        }
+    private void GroundCheck () {
+        isGrounded = Physics2D.OverlapBox (groundRay.start.position, groundRay.direction, 0, groundLayer) != null;
     }
 
-    private void Rotation()
-    {
-        lastDeg = !lastDeg;
-        transform.Rotate(Vector2.up * 180);
+    public void ApplyStep () {
+        float step = CalulateStep ();
+        if (step > stepHeight) return;
+        transform.Translate (Vector3.up * step);
+        if (step > 0) rb.velocity = Vector2.zero;
+    }
+
+    private float CalulateStep () {
+        float step = 0;
+        foreach (RaySegment segment in stepRays) {
+            RaycastHit2D hit = segment.Raycast (groundLayer);
+            if (hit.collider != null) step = Mathf.Max (step, segment.distance - hit.distance);
+        }
+        return step;
+    }
+
+    void OnDrawGizmos () {
+        groundRay.DebugDraw (Color.blue);
+        foreach (RaySegment segment in stepRays) {
+            segment.DebugDraw (new Color (0.2f, 1f, 0.2f));
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.layer == 3)
-        {
-            rb.velocity = Vector2.zero;
-            Instantiate(GroundEffect, rayOrigins[2].transform.position, Quaternion.identity);
+        if (((groundLayer >> collision.gameObject.layer) & 1) == 1) {
+            Instantiate(GroundEffect, particleOrigin.transform.position, Quaternion.identity);
         }
         
         if (movingTags.Contains(collision.gameObject.tag)) {
@@ -157,5 +134,30 @@ public class Controller : MonoBehaviour
         if (movingTags.Contains(collision.gameObject.tag)) {
             gameObject.transform.parent = null;
         }
+    }
+
+    void PressJump (InputAction.CallbackContext value) => jumpPressTime = Time.time;
+    void ReleaseJump (InputAction.CallbackContext value) => jumpPressTime = float.NegativeInfinity;
+
+    // Movement inputs init
+    private void OnEnable() {
+        controls.Enable();
+        controls.Player.Move.performed += OnMovePerformed;
+        controls.Player.Move.canceled += OnMoveCanceled;
+        controls.Player.Jump.performed += PressJump;
+        controls.Player.Jump.canceled += ReleaseJump;
+        controls.Player.Fire.performed += gun.PlayerFire;
+        controls.Player.Exit.performed += menuDrop.OpenPanel;
+        controls.Player.Program.performed += programming.OpenProgrammingPanel;
+    }
+
+    private void OnDisable() {
+        controls.Disable();
+        controls.Player.Move.performed -= OnMovePerformed;
+        controls.Player.Move.canceled -= OnMoveCanceled;
+        controls.Player.Jump.performed -= PressJump;
+        controls.Player.Jump.canceled -= ReleaseJump;
+        controls.Player.Exit.performed -= menuDrop.OpenPanel;
+        controls.Player.Program.performed -= programming.OpenProgrammingPanel;
     }
 }

@@ -108,6 +108,17 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""cf5db499-0402-487a-b02b-1304123e3cf7"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""WASD"",
                     ""id"": ""fc268f9c-9c61-4f6a-949d-25932dfaba44"",
                     ""path"": ""2DVector"",
@@ -209,7 +220,7 @@ public partial class @Gameplay: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""94adef31-e02e-40bd-9172-6ba8c2a6b444"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

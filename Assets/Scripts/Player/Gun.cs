@@ -7,21 +7,20 @@ public class Gun : MonoBehaviour {
     public GameObject bullet;
     public Transform fireOrigin;
     public float reloadTime;
-    private Animator pistolAnim;
-    public GameObject pistol;
     private bool isReady = true;
     public GameObject fireSound;
 
+    private Animator anim;
+
     void Start() {
-        pistolAnim = pistol.gameObject.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     IEnumerator Reload() {
-        pistolAnim.Play("Fire");
+        anim.Play("Weapon.Fire");
         Instantiate(fireSound);
-        Instantiate(bullet, fireOrigin.position, gameObject.transform.rotation);
+        Instantiate(bullet, fireOrigin.position, Quaternion.FromToRotation (Vector3.right, transform.lossyScale.x * transform.right));
         yield return new WaitForSeconds(reloadTime);
-        pistolAnim.Play("Idle");
         isReady = true;
     }
 
