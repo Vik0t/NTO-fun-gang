@@ -105,9 +105,11 @@ public class GroundBot : MonoBehaviour
         anim.Play("Run");
         RaycastHit2D[] hit;
         bool tauched = false;
+        float distance = 1;
+        if (alreadyCarryOn) distance = 2;
         while (true) {
-            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1); 
-            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1); 
+            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, distance); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, distance); 
 
             for (int i = 0; i < hit.Length; i++) {
                 if (hit[i].transform.gameObject.name != gameObject.name) {

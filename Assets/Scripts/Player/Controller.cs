@@ -36,6 +36,7 @@ public class Controller : MonoBehaviour
     public RaySegment groundRay;
     public RaySegment[] stepRays;
     public GameObject[] deathEffects;
+    public GameObject[] winParticles;
 
     [Tooltip ("Max time beetween input and jump")] public float bufferingTime = 0.1f;
     public float stepHeight = 0.1f;
@@ -138,6 +139,11 @@ public class Controller : MonoBehaviour
             alive = false;
             StartCoroutine(DeathAnim());
         }
+
+        if (collision.gameObject.tag == "Finish") {
+            alive = false;
+            StartCoroutine(WinAnim());
+        }
     }
 
     IEnumerator DeathAnim() {
@@ -147,6 +153,19 @@ public class Controller : MonoBehaviour
         deathAnim.Play("Close");
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    IEnumerator WinAnim() {
+        for (int i = 0; i < winParticles.Length; i++) {
+            Instantiate(winParticles[i], transform.position, transform.rotation);
+        }
+        deathAnim.Play("Close");
+        yield return new WaitForSeconds(5f);
+        
+        int currSceneInd = SceneManager.GetActiveScene().buildIndex;
+        currSceneInd++;
+        if (currSceneInd >= SceneManager.sceneCountInBuildSettings) currSceneInd = 0;
+        SceneManager.LoadScene(currSceneInd);
     }
 
     void OnCollisionExit2D(Collision2D collision) {
