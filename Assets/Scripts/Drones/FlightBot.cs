@@ -7,13 +7,13 @@ using UnityEngine.SceneManagement;
 public class FlightBot : MonoBehaviour
 {
     public float speed;
-    private int groundLayer;
-    private int interactiveLayer;
+    public LayerMask groundLayer;
     public float maxLiftableWeight = 10.0f;
     public bool isBeatable;
     private Rigidbody2D rb;
     private Animator anim;
     public Transform origin;
+    public Transform fireOrigin;
     public Transform pickUpOrigin;
     public Transform putOrigin;
     private int dir;
@@ -23,13 +23,16 @@ public class FlightBot : MonoBehaviour
     public GameObject[] deathEffectsAndSounds;
     private Animator deathAnim;
 
+    private GameObject carriedObject;
+    private Rigidbody2D carriedRigidbody;
+    public float carryingDistance = 2f;
+    public GameObject pickupBeam;
+
     // Conditions
     private bool isFounded = false;
     private bool isStartedCondition = false;
 
     void Start() {
-        groundLayer = LayerMask.GetMask("Ground");
-        interactiveLayer = LayerMask.GetMask("Interactive");
         deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
@@ -99,29 +102,27 @@ public class FlightBot : MonoBehaviour
     }
 
     IEnumerator Move() {
-        anim.Play("Run");
         RaycastHit2D[] hit;
         bool tauched = false;
         while (true) {
-            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1); 
-            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1); 
+            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, alreadyCarryOn ? carryingDistance : 1); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, alreadyCarryOn ? carryingDistance : 1); 
 
             for (int i = 0; i < hit.Length; i++) {
-                if (hit[i].transform.gameObject.name != gameObject.name) {
-                    anim.Play("Idle");
+                if (hit[i].transform.gameObject != gameObject && hit[i].transform.gameObject != carriedObject) {
                     tauched = true;
                     break;
                 }
                 rb.velocity = new Vector2(speed * dir * Time.fixedDeltaTime, rb.velocity.y);
-                yield return null;
             }
+            yield return null;
             if (tauched) break;
         }
+        rb.velocity = Vector2.zero;
     }
 
     IEnumerator Vertical(bool OnUp) {
         rb.velocity = Vector2.zero;
-        anim.Play("Run");
         RaycastHit2D[] hit;
         int verticalDir = 0;
         bool tauched = false;
@@ -134,8 +135,7 @@ public class FlightBot : MonoBehaviour
             else hit = Physics2D.RaycastAll(origin.position, Vector2.down, 0.35f); 
 
             for (int i = 0; i < hit.Length; i++) {
-                if (hit[i].transform.gameObject.name != gameObject.name) {
-                    anim.Play("Idle");
+                if (hit[i].transform.gameObject != gameObject) {
                     tauched = true;
                     break;
                 }
@@ -144,6 +144,7 @@ public class FlightBot : MonoBehaviour
             }
             if (tauched) break;
         }
+        rb.velocity = Vector2.zero;
     }
 
     IEnumerator Pick() {
@@ -159,8 +160,12 @@ public class FlightBot : MonoBehaviour
 
                     if (objConfig.IsPickable && !alreadyCarryOn && objConfig.weight <= maxLiftableWeight) {
                         alreadyCarryOn = true;
+                        pickupBeam.SetActive (true);
+                        carriedObject = obj;
+                        carriedRigidbody = carriedObject.GetComponent<Rigidbody2D> ();
                         obj.transform.position = pickUpOrigin.position;
                         obj.transform.parent = pickUpOrigin;
+                        break;
                     }
                 }
             }
@@ -168,19 +173,29 @@ public class FlightBot : MonoBehaviour
         yield return null;
     }
 
+    void Update () {
+        if (carriedRigidbody != null) carriedRigidbody.velocity = Vector2.zero;
+        if (carriedObject != null) carriedObject.transform.localPosition = Vector3.zero;
+        anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
+    }
+
     IEnumerator Put() {
         if (alreadyCarryOn) {
-            Transform child = pickUpOrigin.GetChild(0).gameObject.transform;
+            pickupBeam.SetActive (false);
+            Transform child = carriedObject.transform;
             child.position = putOrigin.position;
             child.parent = null;
             alreadyCarryOn = false;
+            carriedObject = null;
+            carriedRigidbody = null;
         }
         yield return null;
     }
 
     IEnumerator Attack() {
         Instantiate(bulletSound);
-        Instantiate(bullet, putOrigin.position, putOrigin.rotation);
+        Instantiate(bullet, fireOrigin.position, fireOrigin.rotation);
+        anim.Play ("Weapon.Fire");
         yield return new WaitForSeconds(1f);
     }
 
