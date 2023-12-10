@@ -210,7 +210,7 @@ MonoBehaviour:
     prefab: {fileID: 7326246577420116607, guid: cd278e05c40e3ff468e8e8ccbeabdaf9, type: 3}
   bots:
   - name: GroundBot
-    img: {fileID: -2041079901, guid: 3dd5b321b7c7ecc4fbf1b60964971ec0, type: 3}
+    img: {fileID: 21300000, guid: 5614ccc434aba7a4bbe848a6921f35c9, type: 3}
     avaliableCommands: 000000000100000002000000050000000600000008000000090000000a0000000b0000000c000000
     chosenCommands: 
   - name: FlightBot
@@ -222,11 +222,11 @@ MonoBehaviour:
     avaliableCommands: 000000000100000003000000040000000700000008000000090000000a0000000b0000000c000000
     chosenCommands: 
   - name: HeavyBot
-    img: {fileID: 21300000, guid: 0c57df17990998a44ac37e0317d430a4, type: 3}
+    img: {fileID: 21300000, guid: 3e25d2e1df7057b4ab00a01588ff1cb5, type: 3}
     avaliableCommands: 0000000001000000050000000600000008000000090000000a0000000b0000000c000000
     chosenCommands: 
   - name: ShieldBot
-    img: {fileID: 21300000, guid: ea3e972ef86d72747bad4f163b68a0fe, type: 3}
+    img: {fileID: 21300000, guid: 3feb4537af8116c4781608e17d00ea1a, type: 3}
     avaliableCommands: 000000000100000008000000090000000a0000000b0000000c000000
     chosenCommands: 
   buttons:
