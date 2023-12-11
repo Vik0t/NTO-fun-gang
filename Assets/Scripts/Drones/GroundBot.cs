@@ -207,7 +207,6 @@ public class GroundBot : MonoBehaviour
         foreach (GameObject i in deathEffectsAndSounds) {
             Instantiate(i, transform.position, transform.rotation);
         }
-        gameObject.GetComponent<BoxCollider2D>().enabled = false;
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(0.5f);
         deathAnim.Play("Close");
