@@ -316,8 +316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  moveVector: {x: 5, y: 0}
-  WithButton: 1
+  moveVector: {x: 17, y: 0}
+  withButton: 0
 --- !u!50 &6576192930896073958
 Rigidbody2D:
   serializedVersion: 4
