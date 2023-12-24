@@ -1098,8 +1098,8 @@ MonoBehaviour:
   groundRay:
     start: {fileID: 390308926160295234}
     end: {fileID: 6415807824387346847}
-  stepRays:
-  - start: {fileID: 193368893532064088}
+  stepRay:
+    start: {fileID: 193368893532064088}
     end: {fileID: 5691393157021843298}
   deathEffects:
   - {fileID: 7799196604996391998, guid: 77c0a439ea9b6e44c9d21244d01cc637, type: 3}

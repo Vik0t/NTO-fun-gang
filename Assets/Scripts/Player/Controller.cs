@@ -33,8 +33,8 @@ public class Controller : MonoBehaviour
     private Animator deathAnim;
 
     public Transform particleOrigin;
-    public RaySegment groundRay;
-    public RaySegment[] stepRays;
+    public BoxRay groundRay;
+    public SegmentRay stepRay;
     public GameObject[] deathEffects;
     public GameObject[] winParticles;
 
@@ -42,6 +42,7 @@ public class Controller : MonoBehaviour
     public float stepHeight = 0.1f;
     private float jumpPressTime = float.NegativeInfinity;
 
+    private List<Platform> contactedPlatforms;
     
     // Effects && Sounds
     public GameObject GroundEffect;
@@ -51,6 +52,7 @@ public class Controller : MonoBehaviour
         controls = new Gameplay();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        contactedPlatforms = new List<Platform> ();
         control = alive = true;
         gun = gameObject.GetComponent<Gun>();
         menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
@@ -73,6 +75,10 @@ public class Controller : MonoBehaviour
             anim.SetBool ("IsMoving", false);
             rb.velocity = Vector2.zero;
         }
+        foreach (Platform platform in contactedPlatforms) {
+            rb.velocity += new Vector2 (platform.velocity.x, 0);
+        }
+
         anim.SetFloat ("VerticalSpeed", rb.velocity.y);
         anim.SetBool ("IsGrounded", isGrounded);
     }
@@ -99,30 +105,31 @@ public class Controller : MonoBehaviour
     }
 
     private void GroundCheck () {
-        isGrounded = Physics2D.OverlapBox (groundRay.start.position, groundRay.direction, 0, groundLayer) != null;
+        isGrounded = groundRay.Raycast (groundLayer);
     }
 
     public void ApplyStep () {
+        if (rb.velocity.y > 0) return;
+
         float step = CalulateStep ();
-        if (step > stepHeight) return;
+        if (step > stepHeight || step == 0) return;
         transform.Translate (Vector3.up * step);
-        if (step > 0) rb.velocity = Vector2.zero;
     }
 
     private float CalulateStep () {
-        float step = 0;
-        foreach (RaySegment segment in stepRays) {
-            RaycastHit2D hit = segment.Raycast (groundLayer);
-            if (hit.collider != null) step = Mathf.Max (step, segment.distance - hit.distance);
+        stepRay.Raycast (groundLayer, out RaycastHit2D hit);
+        if (Physics2D.Raycast (stepRay.start.position - Vector3.down * hit.distance, Vector2.left * Mathf.Sign (transform.localScale.x), 0.1f, groundLayer).collider != null) {
+            return 0;
         }
-        return step;
+        return stepRay.distance - hit.distance;
     }
 
     void OnDrawGizmos () {
-        groundRay.DebugDraw (Color.blue);
-        foreach (RaySegment segment in stepRays) {
-            segment.DebugDraw (new Color (0.2f, 1f, 0.2f));
-        }
+        Gizmos.color = new Color (0.2f, 0.5f, 1f);
+        groundRay.Draw ();
+
+        Gizmos.color = new Color (0.2f, 1f, 0.2f);
+        stepRay.Draw ();
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -130,9 +137,8 @@ public class Controller : MonoBehaviour
             Instantiate(GroundEffect, particleOrigin.transform.position, Quaternion.identity);
         }
         
-        if (collision.gameObject.GetComponent<Platform>() != null) {
-            gameObject.transform.parent = collision.transform;
-            rb.sharedMaterial.friction = 5f;
+        if (collision.gameObject.TryGetComponent<Platform> (out Platform platform)) {
+            contactedPlatforms.Add (platform);
         }
 
         if (collision.gameObject.tag == "Respawn") {
@@ -169,9 +175,8 @@ public class Controller : MonoBehaviour
     }
 
     void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.GetComponent<Platform>() != null) {
-            gameObject.transform.parent = null;
-            rb.sharedMaterial.friction = 0f;
+        if (collision.gameObject.TryGetComponent<Platform> (out Platform platform)) {
+            contactedPlatforms.Remove (platform);
         }
     }
 
