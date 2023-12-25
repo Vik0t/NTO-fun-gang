@@ -4,42 +4,49 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GroundBot : MonoBehaviour
+public class Bot : MonoBehaviour
 {
-    [Header("Specs")]
+    [Header("Main")]
     public float speed;
     public float jumpForce;
     public float maxLiftableWeight = 10.0f;
-    public bool isBeatable = true;
-    private int groundLayer;
-    private int interactiveLayer;
-    private Rigidbody2D rb;
-    private Animator anim;
-    
-    [Header("Transforms")]
+    public bool isBeatable;
+    public float distance = 1f;
+    public float carryingDistance = 2f;
+    public float scanDistance = 10f;
+
+    [Header("Transform")]
     public Transform origin;
+    public Transform fireOrigin;
     public Transform pickUpOrigin;
     public Transform putOrigin;
-    private int dir;
-    private bool alreadyCarryOn = false;
-
-    [Header("Weapon specs")]
+    
+    [Header("Weapon & Effects")]
     public GameObject bullet;
     public GameObject bulletSound;
-
-    [Header("Other")]
-    private bool isFounded = false;
-    private bool isStartedCondition = false;
     public GameObject[] deathEffectsAndSounds;
     private Animator deathAnim;
 
+    [Header("Objects & Params")]
+    private Rigidbody2D rb;
+    private Animator anim;
+    private int dir;
+    private LayerMask groundLayer;
+    private bool alreadyCarryOn = false;
+    private GameObject carriedObject;
+    private Rigidbody2D carriedRigidbody;
+    public GameObject pickupBeam;
+    private bool isFounded = false;
+    private bool isStartedCondition = false;
+
+
     void Start() {
         groundLayer = LayerMask.GetMask("Ground");
-        interactiveLayer = LayerMask.GetMask("Interactive");
         deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
+        
         if (transform.rotation.y == 0) dir = 1;
         else dir = -1;
     }
@@ -59,6 +66,12 @@ public class GroundBot : MonoBehaviour
                     break;
                 case (int)BotCommands.Rotate:
                     yield return Rotate();
+                    break;
+                case (int)BotCommands.Up:
+                    yield return Vertical(true);
+                    break;
+                case (int)BotCommands.Down:
+                    yield return Vertical(false);
                     break;
                 case (int)BotCommands.Jump:
                     yield return Jump();
@@ -102,31 +115,49 @@ public class GroundBot : MonoBehaviour
     }
 
     IEnumerator Move() {
-        anim.Play("Run");
         RaycastHit2D[] hit;
         bool tauched = false;
-        float distance = 1;
-        if (alreadyCarryOn) distance = 2;
         while (true) {
-            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, distance); 
-            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, distance); 
+            if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, alreadyCarryOn ? carryingDistance : distance); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.left, alreadyCarryOn ? carryingDistance : distance); 
 
             for (int i = 0; i < hit.Length; i++) {
-                if (hit[i].transform.gameObject.name != gameObject.name) {
-                    anim.Play("Idle");
+                if (hit[i].transform.gameObject != gameObject && hit[i].transform.gameObject != carriedObject) {
                     tauched = true;
                     break;
                 }
                 rb.velocity = new Vector2(speed * dir * Time.fixedDeltaTime, rb.velocity.y);
+            }
+            yield return null;
+            if (tauched) break;
+        }
+        rb.velocity = Vector2.zero;
+    }
+
+    IEnumerator Vertical(bool OnUp) {
+        rb.velocity = Vector2.zero;
+        RaycastHit2D[] hit;
+        int verticalDir = 0;
+        bool tauched = false;
+
+        if (OnUp) verticalDir = 1;
+        else verticalDir = -1;
+
+        while (true) {
+            if (OnUp) hit = Physics2D.RaycastAll(origin.position, Vector2.up, 0.35f); 
+            else hit = Physics2D.RaycastAll(origin.position, Vector2.down, 0.35f); 
+
+            for (int i = 0; i < hit.Length; i++) {
+                if (hit[i].transform.gameObject != gameObject) {
+                    tauched = true;
+                    break;
+                }
+                rb.velocity = new Vector2(rb.velocity.x, speed * verticalDir * Time.fixedDeltaTime);
                 yield return null;
             }
             if (tauched) break;
         }
-    }
-
-    IEnumerator Jump() {
-        rb.velocity = new Vector2(jumpForce * dir * 0.5f, jumpForce);
-        while (rb.velocity != Vector2.zero) yield return null;
+        rb.velocity = Vector2.zero;
     }
 
     IEnumerator Pick() {
@@ -142,8 +173,12 @@ public class GroundBot : MonoBehaviour
 
                     if (objConfig.IsPickable && !alreadyCarryOn && objConfig.weight <= maxLiftableWeight) {
                         alreadyCarryOn = true;
+                        pickupBeam.SetActive (true);
+                        carriedObject = obj;
+                        carriedRigidbody = carriedObject.GetComponent<Rigidbody2D> ();
                         obj.transform.position = pickUpOrigin.position;
                         obj.transform.parent = pickUpOrigin;
+                        break;
                     }
                 }
             }
@@ -151,27 +186,42 @@ public class GroundBot : MonoBehaviour
         yield return null;
     }
 
+    void Update () {
+        if (carriedRigidbody != null) carriedRigidbody.velocity = Vector2.zero;
+        if (carriedObject != null) carriedObject.transform.localPosition = Vector3.zero;
+        anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
+    }
+
     IEnumerator Put() {
         if (alreadyCarryOn) {
-            Transform child = pickUpOrigin.GetChild(0).gameObject.transform;
+            pickupBeam.SetActive (false);
+            Transform child = carriedObject.transform;
             child.position = putOrigin.position;
             child.parent = null;
             alreadyCarryOn = false;
+            carriedObject = null;
+            carriedRigidbody = null;
         }
         yield return null;
     }
 
     IEnumerator Attack() {
         Instantiate(bulletSound);
-        Instantiate(bullet, putOrigin.position, putOrigin.rotation);
+        Instantiate(bullet, fireOrigin.position, fireOrigin.rotation);
+        anim.Play ("Weapon.Fire");
         yield return new WaitForSeconds(1f);
+    }
+
+    IEnumerator Jump() {
+        rb.velocity = new Vector2(jumpForce * dir * 0.5f, jumpForce);
+        while (rb.velocity != Vector2.zero) yield return null;
     }
 
     IEnumerator Scan(string type) {
         isFounded = false;
         RaycastHit2D[] hit;
-        if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, 1.5f); 
-        else hit = Physics2D.RaycastAll(origin.position, Vector2.left, 1.5f);
+        if (dir == 1) hit = Physics2D.RaycastAll(origin.position, Vector2.right, scanDistance); 
+        else hit = Physics2D.RaycastAll(origin.position, Vector2.left, scanDistance);
 
         if (hit.Length > 1) {
             for (int i = 0; i < hit.Length; i++) {
@@ -188,7 +238,7 @@ public class GroundBot : MonoBehaviour
                             if (obj.GetComponent<ObjectConfig>() != null) isFounded = true;
                             break;
                         case "Bot":
-                            if (obj.GetComponent<GroundBot>() != null || obj.GetComponent<FlightBot>() != null) isFounded = true;
+                            if (obj.GetComponent<Bot>() != null) isFounded = true;
                             break;
                     }
                 }
@@ -196,7 +246,7 @@ public class GroundBot : MonoBehaviour
         }
         yield return null;
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Respawn") {
             if (isBeatable) StartCoroutine(DeathAnim());

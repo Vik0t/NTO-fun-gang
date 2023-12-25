@@ -27,14 +27,10 @@ public class ApplyCommands : MonoBehaviour
     private int currentBotInd = 0;
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
     [SerializeField] private List<Bots> bots = new List<Bots>();
+    private List<int> foundedDrones = new List<int>();
     public GameObject[] buttons;
     public Transform commandList;
     public Image botChangeButton;
-    private GameObject groundBot;
-    private GameObject flyingBot;
-    private GameObject battleBot;
-    private GameObject heavyBot;
-    private GameObject shieldBot;
     public GameObject listPrefab;
     private int currentList;
     public GameObject mainPanel;
@@ -42,49 +38,27 @@ public class ApplyCommands : MonoBehaviour
     public TMP_Text listCounter;
     private bool isStartedCondition = false;
     public Animator warningCondition;
-    private List<int> foundedDrones = new List<int>();
 
     private void Start() {
         UpdateAvaliableList();
         botChangeButton.sprite = bots[currentBotInd].img;  
 
-        groundBot = GameObject.FindGameObjectWithTag(bots[0].name);
-        flyingBot = GameObject.FindGameObjectWithTag(bots[1].name);
-        battleBot = GameObject.FindGameObjectWithTag(bots[2].name);
-        heavyBot  = GameObject.FindGameObjectWithTag(bots[3].name);
-        shieldBot = GameObject.FindGameObjectWithTag(bots[4].name);
-
-        if (groundBot != null) foundedDrones.Add(0);
-        if (flyingBot != null) foundedDrones.Add(1);
-        if (battleBot != null) foundedDrones.Add(2);
-        if (heavyBot != null)  foundedDrones.Add(3);
-        if (shieldBot != null) foundedDrones.Add(4);
+        for (int curr = 0; curr < bots.Count; curr++) {
+            GameObject searchBot = GameObject.Find(bots[curr].name);
+            Debug.Log(searchBot);
+            if (searchBot != null) foundedDrones.Add(curr);
+        }
         
         ChangeBot(false);
         mainPanel.SetActive(false);
     }
 
-    public void Apply() {
-        switch (bots[currentBotInd].name) {
-            case "GroundBot":
-                groundBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
-                break;
-            case "FlightBot":
-                flyingBot.GetComponent<FlightBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
-                break;
-            case "BattleBot":
-                battleBot.GetComponent<FlightBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
-                break;
-            case "HeavyBot":
-                heavyBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
-                break;
-            case "ShieldBot":
-                shieldBot.GetComponent<GroundBot>().StartDoCommands(bots[currentBotInd].chosenCommands);
-                break;
-        }
+    public void Apply() { 
+        Bot currBot = GameObject.Find(bots[currentBotInd].name).GetComponent<Bot>();
+        currBot.StartDoCommands(bots[currentBotInd].chosenCommands);
     }
 
-    public void Restart() =>  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     public void ChangeBot(bool clearly) {
         if (clearly) {

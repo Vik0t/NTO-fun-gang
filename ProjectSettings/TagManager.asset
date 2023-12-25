@@ -9,15 +9,10 @@ TagManager:
   - ProgrammingOpener
   - VirtualCamera
   - Pick
-  - GroundBot
-  - FlightBot
   - CommandList
   - MovingPlatform
   - Box
   - DeathAnim
-  - BattleBot
-  - ShieldBot
-  - HeavyBot
   layers:
   - Default
   - TransparentFX

@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
             if (hitLeft.Length > 1) {
                 for (int i = 0; i < hitLeft.Length; i++) {
                     GameObject leftObj = hitLeft[i].transform.gameObject;
-                    if (leftObj.GetComponent<Controller>() != null || leftObj.GetComponent<GroundBot>() != null || leftObj.GetComponent<FlightBot>() != null) {
+                    if (leftObj.GetComponent<Controller>() != null || leftObj.GetComponent<Bot>() != null) {
                         if (dir == 1) Rotate();
                         if (!isStayig) Move();
                         if (isReadyToFire) Fire();
@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
             if (hitRight.Length > 1) {
                 for (int i = 0; i < hitRight.Length; i++) {
                     GameObject rightObj = hitRight[i].transform.gameObject;
-                    if (rightObj.GetComponent<Controller>() != null || rightObj.gameObject.GetComponent<GroundBot>() != null || rightObj.GetComponent<FlightBot>() != null) {
+                    if (rightObj.GetComponent<Controller>() != null || rightObj.gameObject.GetComponent<Bot>() != null) {
                         if (dir == -1) Rotate();
                         if (!isStayig) Move();
                         if (isReadyToFire) Fire();
