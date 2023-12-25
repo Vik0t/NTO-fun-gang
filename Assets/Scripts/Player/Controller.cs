@@ -193,6 +193,7 @@ public class Controller : MonoBehaviour
         controls.Player.Fire.performed += gun.PlayerFire;
         controls.Player.Exit.performed += menuDrop.OpenPanel;
         controls.Player.Program.performed += programming.OpenProgrammingPanel;
+        controls.Player.Spec.performed += programming.OpenSpectatorPanel;
     }
 
     private void OnDisable() {
@@ -203,5 +204,6 @@ public class Controller : MonoBehaviour
         controls.Player.Jump.canceled -= ReleaseJump;
         controls.Player.Exit.performed -= menuDrop.OpenPanel;
         controls.Player.Program.performed -= programming.OpenProgrammingPanel;
+        controls.Player.Spec.performed -= programming.OpenSpectatorPanel;
     }
 }

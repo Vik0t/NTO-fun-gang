@@ -45,7 +45,6 @@ public class ApplyCommands : MonoBehaviour
 
         for (int curr = 0; curr < bots.Count; curr++) {
             GameObject searchBot = GameObject.Find(bots[curr].name);
-            Debug.Log(searchBot);
             if (searchBot != null) foundedDrones.Add(curr);
         }
         
