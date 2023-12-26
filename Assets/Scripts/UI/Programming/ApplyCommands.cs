@@ -26,8 +26,8 @@ public class ApplyCommands : MonoBehaviour
     public List<int> cmds;
     private int currentBotInd = 0;
     [SerializeField] private List<Blocks> blocks = new List<Blocks>();
-    [SerializeField] private List<Bots> bots = new List<Bots>();
-    private List<int> foundedDrones = new List<int>();
+    public List<Bots> bots = new List<Bots>();
+    public List<int> foundedDrones = new List<int>();
     public GameObject[] buttons;
     public Transform commandList;
     public Image botChangeButton;
@@ -50,6 +50,7 @@ public class ApplyCommands : MonoBehaviour
         
         ChangeBot(false);
         mainPanel.SetActive(false);
+        gameObject.GetComponent<ProgrammingPanelOpen>().ApplyCam();
     }
 
     public void Apply() { 

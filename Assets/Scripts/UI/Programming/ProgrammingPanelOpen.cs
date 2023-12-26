@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class ProgrammingPanelOpen : MonoBehaviour
 {
     public GameObject panel;
     public Button firstButton;
 
-    public GameObject sp;
-    public Button spFirstButt;
+    
+    // Spectator
+    private CinemachineVirtualCamera cvm;
+    private int camIndex;
+    private bool isPlayerSearch = true;
+    private Transform player;
+    private List<int> avaliableIndex = new List<int>();
+
 
     public void OpenProgrammingPanel(InputAction.CallbackContext value) {
         if (Controller.control) {
@@ -29,16 +36,33 @@ public class ProgrammingPanelOpen : MonoBehaviour
         panel.SetActive(false);
     }
 
-    public void OpenSpectatorPanel(InputAction.CallbackContext value) {
-        if (Controller.control) {
-            Controller.control = false;
-            sp.SetActive(true);
-            spFirstButt.Select();
-        }
+
+    public void ApplyCam() {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        cvm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        avaliableIndex = gameObject.GetComponent<ApplyCommands>().foundedDrones;
+        ChangePoint();
     }
 
-    public void CloseSpectatorPanel() {
-        Controller.control = true;
-        sp.SetActive(false);
+    public void NextSpec(InputAction.CallbackContext value) {
+        if (isPlayerSearch) {
+            isPlayerSearch = false;
+            camIndex = 0;
+        }
+        else {
+            camIndex++;
+            if (camIndex >= avaliableIndex.Count) {
+                isPlayerSearch = true;
+            }
+        }
+        ChangePoint();
+    }
+
+    private void ChangePoint() {
+        if (isPlayerSearch) cvm.Follow = player;
+        else {
+            Transform currBot = GameObject.Find(gameObject.GetComponent<ApplyCommands>().bots[avaliableIndex[camIndex]].name).transform;
+            cvm.Follow = currBot;
+        }
     }
 }

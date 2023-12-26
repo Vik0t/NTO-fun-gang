@@ -19,7 +19,6 @@ public class Controller : MonoBehaviour
     private Gun gun;
     private MenuDrop menuDrop;
     private ProgrammingPanelOpen programming;
-    private CinemachineVirtualCamera cvm;
 
 
     // Movement
@@ -57,8 +56,6 @@ public class Controller : MonoBehaviour
         gun = gameObject.GetComponent<Gun>();
         menuDrop = GameObject.FindGameObjectWithTag("MenuDrop").GetComponent<MenuDrop>();
         programming = GameObject.FindGameObjectWithTag("ProgrammingOpener").GetComponent<ProgrammingPanelOpen>();
-        cvm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
-        cvm.Follow = gameObject.transform;
         deathAnim = GameObject.FindGameObjectWithTag("DeathAnim").GetComponent<Animator>();
     }
 
@@ -193,7 +190,7 @@ public class Controller : MonoBehaviour
         controls.Player.Fire.performed += gun.PlayerFire;
         controls.Player.Exit.performed += menuDrop.OpenPanel;
         controls.Player.Program.performed += programming.OpenProgrammingPanel;
-        controls.Player.Spec.performed += programming.OpenSpectatorPanel;
+        controls.Player.Spec.performed += programming.NextSpec;
     }
 
     private void OnDisable() {
@@ -204,6 +201,6 @@ public class Controller : MonoBehaviour
         controls.Player.Jump.canceled -= ReleaseJump;
         controls.Player.Exit.performed -= menuDrop.OpenPanel;
         controls.Player.Program.performed -= programming.OpenProgrammingPanel;
-        controls.Player.Spec.performed -= programming.OpenSpectatorPanel;
+        controls.Player.Spec.performed -= programming.NextSpec;
     }
 }
